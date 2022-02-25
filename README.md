@@ -29,4 +29,4 @@ In your preffered terminal do:
 ## Deploy 🚀
 Deployment happens automatically when the `main` branch receives new commits.
 
-The website can be found [here](https://cs-project-server.herokuapp.com/)..
+The website can be found [here](https://cs-project-server.herokuapp.com/).
