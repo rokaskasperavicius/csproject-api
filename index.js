@@ -39,7 +39,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options)
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.get('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
