@@ -1,16 +1,19 @@
 const express = require('express')
 const app = express()
-const { Pool } = require('pg')
-const port = process.env.PORT || 5000
+// const { Pool } = require('pg')
+// const port = process.env.PORT || 5000
 
 const cors = require('cors')
 
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
+console.log('Hi dasda da')
 
 require('dotenv').config()
 
 app.use(express.json())
+
+console.log('Hi')
 
 const corsOptions = {
   origin: 'http://localhost:3000',
