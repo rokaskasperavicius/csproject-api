@@ -51,7 +51,7 @@ const pool = new Pool({
 
 /**
  * @swagger
- *  /product:
+ *  /api/products:
  *    post:
  *      tags: [Products]
  *      summary: Add a new product
@@ -63,10 +63,6 @@ const pool = new Pool({
  *            schema:
  *              type: object
  *              properties:
- *                categoryName:
- *                  type: string
- *                  description: Category name
- *                  example: food
  *                subCategoryName:
  *                  type: string
  *                  description: Sub-category name
@@ -99,8 +95,8 @@ const pool = new Pool({
  *                    type: boolean
  *                    example: false
  */
-app.post('/product', async (req, res) => {
-  const { categoryName, subCategoryName, name, note } = req.body
+app.post('/api/products', async (req, res) => {
+  const { subCategoryName, name, note } = req.body
 
   const client = await pool.connect()
 
@@ -110,7 +106,7 @@ app.post('/product', async (req, res) => {
       VALUES(
       (SELECT id
         FROM sub_categories
-        WHERE name = '${subCategoryName.toLowerCase()}' AND category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
+        WHERE name = '${subCategoryName.toLowerCase()}'
       ),
       '${name}',
       '${note}'
@@ -127,6 +123,98 @@ app.post('/product', async (req, res) => {
       }
     }
   )
+})
+
+/**
+ * @swagger
+ *  /api/categories:
+ *    get:
+ *      tags: [Categories]
+ *      summary: Get all categories
+ *      description: Get all names of all existing cateogires.
+ *      responses:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  success:
+ *                    type: boolean
+ *                    example: true
+ *                  data:
+ *                    type: array
+ *                    items:
+ *                      type: string
+ *                    example: ['foods', 'medicine']
+ *        500:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  success:
+ *                    type: boolean
+ *                    example: false
+ */
+app.get('/api/categories', async (req, res) => {
+  const client = await pool.connect()
+
+  client.query('SELECT name FROM categories', (err, result) => {
+    client.release()
+
+    if (err) {
+      res.json({ success: false })
+    } else {
+      res.json({
+        success: true,
+        data: result.rows.map(({ name }) => name),
+      })
+    }
+  })
+})
+
+app.get('/api/categories/sub-categories', async (req, res) => {
+  const { categoryName } = req.query
+
+  const client = await pool.connect()
+
+  client.query(
+    `
+    SELECT name
+      FROM sub_categories
+      WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
+  `,
+    (err, result) => {
+      client.release()
+
+      if (err) {
+        res.json({ success: false })
+      } else {
+        res.json({
+          success: true,
+          data: result.rows.map(({ name }) => name),
+        })
+      }
+    }
+  )
+})
+
+app.get('/api/products', async (req, res) => {
+  const client = await pool.connect()
+
+  client.query('SELECT name, note FROM products', (err, result) => {
+    client.release()
+
+    if (err) {
+      res.json({ success: false })
+    } else {
+      res.json({
+        success: true,
+        data: result.rows,
+      })
+    }
+  })
 })
 
 setInterval(() => {
