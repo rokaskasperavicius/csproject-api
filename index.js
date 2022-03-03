@@ -19,6 +19,33 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+const nodemailer = require('nodemailer')
+
+app.get('/mail', (req, res) => {
+  const transporter = nodemailer.createTransport({
+    service: 'SendinBlue',
+    auth: {
+      user: 'goodname258@gmail.com',
+      pass: process.env.SEND_IN_BLUE_AUTH,
+    },
+  })
+
+  var mailOptions = {
+    from: 'no-reply@csproject.com',
+    to: 'kasperavicius.rokas@gmail.com',
+    subject: 'Your food is about to expire',
+    text: 'Your carrots will expire in 10 hours :(',
+  }
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.send(error)
+    } else {
+      res.send(info.response)
+    }
+  })
+})
+
 // Setup CORS
 app.use(cors(corsOptions))
 
