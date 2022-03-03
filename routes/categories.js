@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/sub-categories', async (req, res) => {
-  const { categoryName } = req.query
+  const { categoryName = '' } = req.query
 
   const client = await pool.connect()
 

@@ -27,6 +27,10 @@ app.use('/api/products', productsRouter)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
 
+app.get('/', (req, res) => {
+  res.redirect('/docs')
+})
+
 // Setup server
 const port = process.env.PORT || 5000
 
