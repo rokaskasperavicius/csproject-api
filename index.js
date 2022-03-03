@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const sslRedirect = require('heroku-ssl-redirect')
 const { Pool } = require('pg')
 const cors = require('cors')
 const swaggerUi = require('swagger-ui-express')
@@ -18,7 +19,11 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+// Setup CORS
 app.use(cors(corsOptions))
+
+// Makes sure that https is the default protocol
+app.use(sslRedirect.default())
 
 app.use(express.json())
 
