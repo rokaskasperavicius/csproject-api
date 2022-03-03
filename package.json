@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#routes/*": "./routes/*",
+    "#swagger/*": "./swagger/*"
+  },
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,7 +20,6 @@
     "express": "^4.17.2",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
-    "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
