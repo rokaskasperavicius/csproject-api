@@ -11,7 +11,7 @@ const sendEmail = (template, subject, emailTo, context, isProd) => {
   const fromEmail = 'no-reply@csproject.com'
 
   const prodUser = 'goodname258@gmail.com'
-  const testUser = 'grace.ryan33@ethereal.emaill'
+  const testUser = 'grace.ryan33@ethereal.email'
 
   if (isProd) {
     mailConfig = {
