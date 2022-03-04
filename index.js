@@ -19,31 +19,51 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-const nodemailer = require('nodemailer')
+// Email
+const sendEmail = require('./email.js')
 
-app.get('/mail', (req, res) => {
-  const transporter = nodemailer.createTransport({
-    service: 'SendinBlue',
-    auth: {
-      user: 'goodname258@gmail.com',
-      pass: process.env.SEND_IN_BLUE_AUTH,
-    },
-  })
+const products = [
+  {
+    name: 'Carrots',
+    expires: new Date('2022/03/06'),
+  },
+  {
+    name: 'Milk',
+    expires: new Date('2022/03/06'),
+  },
+  {
+    name: 'Chicken',
+    expires: new Date('2022/03/06'),
+  },
+]
 
-  var mailOptions = {
-    from: 'no-reply@csproject.com',
-    to: 'kasperavicius.rokas@gmail.com',
-    subject: 'Your food is about to expire',
-    text: 'Your carrots will expire in 10 hours :(',
-  }
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      res.send(error)
-    } else {
-      res.send(info.response)
+app.get('/mail', async (req, res) => {
+  const info = await sendEmail(
+    'expiring',
+    'Your food is about to expire',
+    'kasperavicius.rokas@gmail.com',
+    {
+      name: 'Rokas',
+      products,
     }
-  })
+  )
+
+  res.send(info?.accepted ? 'Email sent successfully to test' : info)
+})
+
+app.get('/mailToProd', async (req, res) => {
+  const info = await sendEmail(
+    'expiring',
+    'Your food is about to expire',
+    'kasperavicius.rokas@gmail.com',
+    {
+      name: 'Rokas',
+      products,
+    },
+    true
+  )
+
+  res.send(info?.accepted ? 'Email sent successfully to production' : info)
 })
 
 // Setup CORS
