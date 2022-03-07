@@ -30,7 +30,7 @@ const db = async (query) => {
      */
 
     // Read PostgreSQL errors
-    error.code = handlePostgresError(error.code)
+    error.errorCode = handlePostgresError(error.code)
 
     throw error
   } finally {

@@ -24,7 +24,7 @@ app.get('/sub-categories', async (req, res, next) => {
     // Check if categoryName exists
     if (!categoryName) {
       const error = new Error('Missing categoryName')
-      error.code = ERROR_CODES.MISSING_DATA
+      error.errorCode = ERROR_CODES.MISSING_DATA
 
       throw error
     }

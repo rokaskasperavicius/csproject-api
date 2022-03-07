@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 app.use((error, req, res, next) => {
   res.status(error.status || 500).json({
     success: false,
-    errorCode: error.code,
+    errorCode: error.errorCode,
     errorText: error.message,
   })
 })

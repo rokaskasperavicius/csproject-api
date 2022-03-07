@@ -24,7 +24,7 @@ app.post('/', async (req, res, next) => {
     // Check if all request body variables exist
     if (!subCategoryName || !name || !note || !expiryDate) {
       const error = new Error('Missing full request body')
-      error.code = ERROR_CODES.MISSING_DATA
+      error.errorCode = ERROR_CODES.MISSING_DATA
 
       throw error
     }

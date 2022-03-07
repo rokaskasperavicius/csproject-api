@@ -4,7 +4,7 @@ const app = express.Router()
 const sendEmail = require('#base/email.js')
 const db = require('#services/db.js')
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
   try {
     const query = `
       SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
@@ -14,7 +14,7 @@ app.get('/', async (req, res) => {
     `
     const data = await db(query)
 
-    sendEmail(
+    const info = await sendEmail(
       'expiring',
       'Your food is about to expire',
       'kasperavicius.rokas@gmail.com',
@@ -22,9 +22,9 @@ app.get('/', async (req, res) => {
         name: 'Rokas',
         products: data,
       }
-    ).then((info) => {
-      res.send(info?.accepted ? 'Email sent successfully to test' : info)
-    })
+    )
+
+    res.send(info?.accepted ? 'Email sent successfully to test' : info)
   } catch (err) {
     next(err)
   }
