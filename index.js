@@ -38,6 +38,13 @@ app.get('/', (req, res) => {
   res.redirect('/docs')
 })
 
+// Handle 404 routes
+app.all('*', (req, res, next) => {
+  next({
+    message: `Route ${req.path} with method ${req.method} not found`,
+  })
+})
+
 // Handle all errors
 app.use((error, req, res, next) => {
   res.status(error.status || 500).json({
