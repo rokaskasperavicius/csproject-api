@@ -2,6 +2,7 @@ const express = require('express')
 const app = express.Router()
 
 const ERROR_CODES = require('#base/constants.js')
+const customError = require('#base/customError.js')
 const db = require('#services/db.js')
 
 app.get('/', async (req, res, next) => {
@@ -23,10 +24,7 @@ app.get('/sub-categories', async (req, res, next) => {
   try {
     // Check if categoryName exists
     if (!categoryName) {
-      const error = new Error('Missing categoryName')
-      error.errorCode = ERROR_CODES.MISSING_DATA
-
-      throw error
+      throw customError('Missing categoryName', ERROR_CODES.MISSING_DATA)
     }
 
     const query = `
