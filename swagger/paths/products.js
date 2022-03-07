@@ -58,6 +58,11 @@ const paths = {
             description: 'User specific custom note',
             example: 'These carrots are really good',
           },
+          expiryDate: {
+            type: 'string',
+            description: 'ISO 8601 compliant product expiry date',
+            example: '2022-03-05T23:55:44.135Z',
+          },
         }),
       },
       responses: {

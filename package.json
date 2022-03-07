@@ -6,7 +6,9 @@
   "imports": {
     "#routes/*": "./routes/*",
     "#swagger/*": "./swagger/*",
-    "#templates/*": "./templates/*"
+    "#templates/*": "./templates/*",
+    "#services/*": "./services/*",
+    "#base/*": "./*"
   },
   "scripts": {
     "start": "nodemon index.js",

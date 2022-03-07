@@ -6,13 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Email template for expiring products" />
+
+    <style>
+      .hover:hover > span {
+        border-bottom: 1px solid black;
+      }
+    </style>
   </head>
-  <body>
+  <body style="max-width: 450px">
     <h3>Hi, {{ name }}!</h3>
     <p>These products are about to expire tomorrow:</p>
     <ol>
       {{#each products}}
-      <li>{{this.name}}</li>
+      <li style="padding-bottom: 1px; height: 20px">
+        <div class="hover" style="display: flex">
+          <span
+            style="
+              width: 150px;
+              white-space: nowrap;
+              display: inline-block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+          >
+            {{this.name}}
+          </span>
+          <span style="padding-left: 10px">Expires: {{this.expiryDate}}</span>
+        </div>
+      </li>
       {{/each}}
     </ol>
     <p>Be sure to take care of them :)</p>

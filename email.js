@@ -11,7 +11,7 @@ const sendEmail = (template, subject, emailTo, context, isProd) => {
   const fromEmail = 'no-reply@csproject.com'
 
   const prodUser = 'goodname258@gmail.com'
-  const testUser = 'grace.ryan33@ethereal.email'
+  const testUser = '06f5d18fe37d94'
 
   if (isProd) {
     mailConfig = {
@@ -23,8 +23,8 @@ const sendEmail = (template, subject, emailTo, context, isProd) => {
     }
   } else {
     mailConfig = {
-      host: 'smtp.ethereal.email',
-      port: 587,
+      host: 'smtp.mailtrap.io',
+      port: 2525,
       auth: {
         user: testUser,
         pass: process.env.TEST_EMAIL_AUTH,

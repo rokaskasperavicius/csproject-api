@@ -1,56 +1,49 @@
 const express = require('express')
 const app = express.Router()
-const { Pool } = require('pg')
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    sslmode: 'require',
-    rejectUnauthorized: false,
-  },
+const ERROR_CODES = require('#base/constants.js')
+const db = require('#services/db.js')
+
+app.get('/', async (req, res, next) => {
+  try {
+    const data = await db('SELECT name FROM categories')
+
+    res.json({
+      success: true,
+      data: data.map(({ name }) => name),
+    })
+  } catch (err) {
+    next(err)
+  }
 })
 
-app.get('/', async (req, res) => {
-  const client = await pool.connect()
+app.get('/sub-categories', async (req, res, next) => {
+  const { categoryName } = req.query
 
-  client.query('SELECT name FROM categories', (err, result) => {
-    client.release()
+  try {
+    // Check if categoryName exists
+    if (!categoryName) {
+      const error = new Error('Missing categoryName')
+      error.code = ERROR_CODES.MISSING_DATA
 
-    if (err) {
-      res.json({ success: false })
-    } else {
-      res.json({
-        success: true,
-        data: result.rows.map(({ name }) => name),
-      })
+      throw error
     }
-  })
-})
 
-app.get('/sub-categories', async (req, res) => {
-  const { categoryName = '' } = req.query
-
-  const client = await pool.connect()
-
-  client.query(
+    const query = `
+      SELECT name
+        FROM sub_categories
+        WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
     `
-    SELECT name
-      FROM sub_categories
-      WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
-  `,
-    (err, result) => {
-      client.release()
 
-      if (err) {
-        res.json({ success: false })
-      } else {
-        res.json({
-          success: true,
-          data: result.rows.map(({ name }) => name),
-        })
-      }
-    }
-  )
+    const data = await db(query)
+
+    res.json({
+      success: true,
+      data: data.map(({ name }) => name),
+    })
+  } catch (err) {
+    next(err)
+  }
 })
 
 module.exports = app
