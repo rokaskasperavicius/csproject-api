@@ -4,7 +4,7 @@ const setup = {
   info: {
     version: '1.0.0',
     title: 'CS Project API description',
-    description: 'My User Project Application API',
+    description: 'Documentation of all API routes',
     license: {
       name: 'MIT',
       url: 'https://opensource.org/licenses/MIT',
