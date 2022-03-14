@@ -54,6 +54,8 @@ app.use((error, req, res, next) => {
   })
 })
 
+console.log('Random mf')
+
 // Setup server
 const port = process.env.PORT || 5000
 
