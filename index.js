@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express')
 
 require('dotenv').config()
 
+console.log('Random mf')
+
 // Routes
 const categoriesRouter = require('#routes/categories.js')
 const productsRouter = require('#routes/products.js')
