@@ -4,7 +4,7 @@
   - [Requirements ⚙️](#requirements-️)
   - [Starting the project 🛠](#starting-the-project-)
   - [Server structure 🔒](#server-structure-)
-    - [ER Diagram of the database](#er-diagram-of-the-database)
+    - [(W.I.P) ER Diagram of the database](#wip-er-diagram-of-the-database)
   - [Deploy 🚀](#deploy-)
 
 ## Requirements ⚙️
@@ -12,7 +12,7 @@
 - Node v16.14.x
 - Npm v8.3.x
 
-You can install Node.js with npm [here](https://nodejs.org/en/).
+You can install Node.js with npm [here](https://nodejs.org/download/release/v16.14.0/).
 
 ## Starting the project 🛠
 
@@ -28,7 +28,7 @@ In your preffered terminal do:
 
 `index.js` is the starting file
 
-### ER Diagram of the database
+### (W.I.P) ER Diagram of the database
 
 ![Alt text](markdown/er-diagram.png?raw=true 'Title')
 
