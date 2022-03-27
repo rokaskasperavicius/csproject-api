@@ -14,8 +14,10 @@ const setup = {
 
 const productPaths = require('#swagger/paths/products.js')
 const categoryPaths = require('#swagger/paths/categories.js')
+const suggestionsPath = require('#swagger/paths/suggestions.js')
 
 setup['paths'] = {
+  ...suggestionsPath,
   ...categoryPaths,
   ...productPaths,
 }

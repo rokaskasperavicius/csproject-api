@@ -17,11 +17,11 @@ const handlePostgresError = (code) => {
   }
 }
 
-const db = async (query) => {
+const db = async (query, values = []) => {
   const client = await pool.connect()
 
   try {
-    return await client.query(query).then((result) => result.rows)
+    return await client.query(query, values).then((result) => result.rows)
   } catch (error) {
     /**
      * https://blog.larah.me/dont-rethrow-new-Error-error/

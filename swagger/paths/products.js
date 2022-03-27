@@ -5,6 +5,37 @@ const paths = {
     get: {
       tags: ['Products'],
       summary: 'Get all products',
+      description: 'Get all products with optional search queries.',
+      parameters: [
+        {
+          name: 'filter',
+          in: 'query',
+          description: 'Filter by subcategory ids.',
+          example: '1,3,6',
+        },
+        {
+          name: 'search',
+          in: 'query',
+          description:
+            'Search for products in name, note, subcategory and category names.',
+          example: 'red color, left frozen',
+        },
+        {
+          name: 'orderby',
+          in: 'query',
+          description: 'Order products by either name, note or expiry date.',
+          default: 'name',
+          example: 'expiry',
+        },
+        {
+          name: 'direction',
+          in: 'query',
+          description:
+            'Specify which direction to order products (asc or desc)',
+          default: 'asc',
+          example: 'desc',
+        },
+      ],
       responses: {
         200: {
           description: 'Success',
@@ -19,8 +50,18 @@ const paths = {
                 type: 'object',
               },
               example: [
-                { name: 'carrots', note: 'These are really good' },
-                { name: 'potatoes', note: 'Insert a note here' },
+                {
+                  id: 14,
+                  name: 'carrots',
+                  note: 'These are really good',
+                  expiryDate: '2022-03-05T00:00:00.000Z',
+                },
+                {
+                  id: 34,
+                  name: 'potatoes',
+                  note: 'Insert a note here',
+                  expiryDate: '2022-06-15T00:00:00.000Z',
+                },
               ],
             },
           }),
@@ -31,6 +72,14 @@ const paths = {
             success: {
               type: 'boolean',
               example: 'false',
+            },
+            errorCode: {
+              type: 'integer',
+              example: 2,
+            },
+            errorText: {
+              type: 'string',
+              example: 'Invalid query',
             },
           }),
         },

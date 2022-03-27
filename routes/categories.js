@@ -18,7 +18,7 @@ app.get('/', async (req, res, next) => {
   }
 })
 
-app.get('/sub-categories', async (req, res, next) => {
+app.get('/subcategories', async (req, res, next) => {
   const { categoryName } = req.query
 
   try {
@@ -29,7 +29,7 @@ app.get('/sub-categories', async (req, res, next) => {
 
     const query = `
       SELECT name
-        FROM sub_categories
+        FROM subcategories
         WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
     `
 
