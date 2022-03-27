@@ -10,6 +10,7 @@ require('dotenv').config()
 // Routes
 const suggestionsRouter = require('#routes/suggestions.js')
 const categoriesRouter = require('#routes/categories.js')
+const registerRouter = require('#routes/register.js')
 const productsRouter = require('#routes/products.js')
 const emailRouter = require('#routes/email.js')
 
@@ -31,6 +32,7 @@ app.use(express.json())
 
 app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
+app.use('/api/register', registerRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/email', emailRouter)
 
