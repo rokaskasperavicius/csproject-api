@@ -1,8 +1,8 @@
 // For sending emails
-const nodemailer = require('nodemailer')
+import nodemailer from 'nodemailer'
 
 // For templating html emails
-var hbs = require('nodemailer-express-handlebars')
+import hbs from 'nodemailer-express-handlebars'
 
 const sendEmail = async (template, subject, emailTo, context, isProd) => {
   let mailConfig
@@ -57,4 +57,4 @@ const sendEmail = async (template, subject, emailTo, context, isProd) => {
   return await transporter.sendMail(mailOptions)
 }
 
-module.exports = sendEmail
+export default sendEmail

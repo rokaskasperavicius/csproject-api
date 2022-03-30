@@ -1,6 +1,8 @@
-const { Pool } = require('pg')
+import * as pg from 'pg'
 
-const ERROR_CODES = require('#base/constants.js')
+const { Pool } = pg.default
+
+import ERROR_CODES from 'constants.js'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -38,4 +40,4 @@ const db = async (query, values = []) => {
   }
 }
 
-module.exports = db
+export default db

@@ -1,20 +1,21 @@
-const express = require('express')
-const app = express.Router()
+import express from 'express'
 
-const ERROR_CODES = require('#base/constants.js')
-const customError = require('#base/customError.js')
-const db = require('#services/db.js')
+import ERROR_CODES from 'constants.js'
+import customError from 'customError.js'
+import db from 'services/db.js'
+
+const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   let { filter, search, orderby, direction } = req.query
 
-  orderByOptions = {
+  const orderByOptions = {
     name: 'name',
     note: 'note',
     expiry: 'expiry_date',
   }
 
-  directionOptions = {
+  const directionOptions = {
     asc: 'asc',
     desc: 'desc',
   }
@@ -86,4 +87,4 @@ app.post('/', async (req, res, next) => {
   }
 })
 
-module.exports = app
+export default app

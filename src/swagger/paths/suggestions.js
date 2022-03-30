@@ -1,4 +1,4 @@
-const formatContent = require('../utils.js')
+import formatContent from 'swagger/utils.js'
 
 const paths = {
   '/api/suggestions': {
@@ -37,4 +37,4 @@ const paths = {
   },
 }
 
-module.exports = paths
+export default paths

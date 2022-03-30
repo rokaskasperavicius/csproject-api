@@ -4,4 +4,4 @@ const ERROR_CODES = {
   INVALID_DATA: 3,
 }
 
-module.exports = ERROR_CODES
+export default ERROR_CODES

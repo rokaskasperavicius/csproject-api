@@ -1,0 +1,17 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env" // Import preset babel modules
+    ]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        // Allow absolute imports
+        "root": ["./src"]
+      }
+    ],
+    "@babel/plugin-transform-modules-commonjs" // Allow ES6 import / export
+  ]
+}

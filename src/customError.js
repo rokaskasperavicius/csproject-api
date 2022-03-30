@@ -5,4 +5,4 @@ const customError = (message, code) => {
   return error
 }
 
-module.exports = customError
+export default customError

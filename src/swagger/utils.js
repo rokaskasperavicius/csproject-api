@@ -9,4 +9,4 @@ const formatContent = (type, properties) => {
   }
 }
 
-module.exports = formatContent
+export default formatContent
