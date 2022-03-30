@@ -30,7 +30,7 @@ In your preffered terminal do:
 
 ### (W.I.P) ER Diagram of the database
 
-![Alt text](markdown/er-diagram.png?raw=true 'Title')
+![Alt text](public/er-diagram.png?raw=true 'Title')
 
 ## Deploy 🚀
 

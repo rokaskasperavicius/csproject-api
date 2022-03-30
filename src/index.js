@@ -8,7 +8,7 @@ import path from 'path'
 import 'dotenv/config'
 
 const app = express()
-app.use(favicon(path.join(__dirname, 'favicon.ico')))
+app.use(favicon('./public/favicon.ico'))
 
 // Routes
 import suggestionsRouter from 'routes/suggestions.js'
