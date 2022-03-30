@@ -58,6 +58,7 @@ app.use(async (error, req, res, next) => {
   // const errorr = new Error('Test')
 
   const { ip } = req
+  const browser = req.headers['user-agent']
   const host = os.hostname()
 
   axios.post(process.env.DISCORD_WEBHOOK, {
@@ -69,18 +70,13 @@ app.use(async (error, req, res, next) => {
         timestamp: new Date().toISOString(),
         fields: [
           {
-            name: 'Host',
-            value: host,
-            inline: true,
-          },
-          {
             name: 'IP',
             value: ip,
             inline: true,
           },
           {
-            name: 'Platform',
-            value: os.platform(),
+            name: 'Browser',
+            value: browser,
             inline: true,
           },
         ],
