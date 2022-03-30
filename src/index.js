@@ -54,7 +54,7 @@ import os from 'os'
 
 // Handle all errors
 app.use(async (error, req, res, next) => {
-  console.log(error)
+  console.log(error.stack)
   // const errorr = new Error('Test')
 
   const { ip } = req
