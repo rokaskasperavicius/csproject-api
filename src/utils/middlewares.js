@@ -37,7 +37,7 @@ export function errorHandler(error, req, res, next) {
   })
 
   const status = error.status || 500
-  const code = error.code || ERROR_CODES.DEFAULT
+  const code = error.errorCode || ERROR_CODES.DEFAULT
   const text = error.message || 'Something went wrong'
 
   res.status(error.status || 500).json({

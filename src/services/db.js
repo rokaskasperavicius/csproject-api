@@ -33,7 +33,7 @@ const db = async (query, values = []) => {
 
     // Read PostgreSQL errors
     error.errorCode = handlePostgresError(error.code)
-
+    console.log(error)
     throw error
   } finally {
     client.end()

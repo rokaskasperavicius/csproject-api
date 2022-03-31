@@ -14,7 +14,7 @@ const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   try {
-    const data = await db('SELECT name FROM categoriess')
+    const data = await db('SELECT name FROM categories')
 
     res.json({
       success: true,
