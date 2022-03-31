@@ -21,8 +21,8 @@ In your preffered terminal do:
 1. `git clone git@github.com:rokaskasperavicius/cs-project-server.git`
 2. `cd cs-project-server`
 3. `npm install`
-4. `npm start`
-5. Open [http://localhost:3000/](http://localhost:3000/) to see the server application
+4. `npm run dev`
+5. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
 
 ## Server structure 🔒
 
@@ -30,7 +30,7 @@ In your preffered terminal do:
 
 ### (W.I.P) ER Diagram of the database
 
-![Alt text](markdown/er-diagram.png?raw=true 'Title')
+![Alt text](public/er-diagram.png?raw=true 'Title')
 
 ## Deploy 🚀
 

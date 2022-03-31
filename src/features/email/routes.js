@@ -1,15 +1,16 @@
-const express = require('express')
-const app = express.Router()
+import express from 'express'
 
-const sendEmail = require('#base/email.js')
-const db = require('#services/db.js')
+import sendEmail from 'utils/email.js'
+import db from 'services/db.js'
+
+const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   try {
     const query = `
       SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
         FROM products
-        WHERE (CURRENT_DATE + INTERVAL '5 days') >= expiry_date AND has_notified IS FALSE
+        WHERE (CURRENT_DATE + INTERVAL '5 days') >= expiry_date AND notified IS FALSE
         ORDER BY expiry_date ASC;
     `
     const data = await db(query)
@@ -21,7 +22,8 @@ app.get('/', async (req, res, next) => {
       {
         name: 'Rokas',
         products: data,
-      }
+      },
+      true
     )
 
     res.send(info?.accepted ? 'Email sent successfully to test' : info)
@@ -47,4 +49,4 @@ app.get('/', async (req, res, next) => {
 
 // Sike, it won't
 
-module.exports = app
+export default app

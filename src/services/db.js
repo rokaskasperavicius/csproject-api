@@ -1,6 +1,9 @@
-const { Pool } = require('pg')
+import * as pg from 'pg'
 
-const ERROR_CODES = require('#base/constants.js')
+// Utils
+import { PSQL_CODES } from 'utils/constants.js'
+
+const { Pool } = pg.default
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -12,8 +15,8 @@ const pool = new Pool({
 
 const handlePostgresError = (code) => {
   switch (code) {
-    default:
-      return ERROR_CODES.UNKNOWN
+    case '23505':
+      return PSQL_CODES.UNIQUE
   }
 }
 
@@ -31,11 +34,12 @@ const db = async (query, values = []) => {
 
     // Read PostgreSQL errors
     error.errorCode = handlePostgresError(error.code)
-
+    error.message = 'PostgreSQL internal error'
+    console.log(error)
     throw error
   } finally {
     client.end()
   }
 }
 
-module.exports = db
+export default db

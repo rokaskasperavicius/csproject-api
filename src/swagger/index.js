@@ -12,9 +12,9 @@ const setup = {
   },
 }
 
-const productPaths = require('#swagger/paths/products.js')
-const categoryPaths = require('#swagger/paths/categories.js')
-const suggestionsPath = require('#swagger/paths/suggestions.js')
+import productPaths from 'swagger/paths/products.js'
+import categoryPaths from 'swagger/paths/categories.js'
+import suggestionsPath from 'swagger/paths/suggestions.js'
 
 setup['paths'] = {
   ...suggestionsPath,
@@ -22,4 +22,4 @@ setup['paths'] = {
   ...productPaths,
 }
 
-module.exports = setup
+export default setup
