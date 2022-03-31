@@ -2,7 +2,7 @@ import * as pg from 'pg'
 
 const { Pool } = pg.default
 
-import ERROR_CODES from 'constants.js'
+import ERROR_CODES from 'utils/constants.js'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

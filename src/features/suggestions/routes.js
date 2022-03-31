@@ -1,19 +1,20 @@
 import express from 'express'
 
-import ERROR_CODES from 'constants.js'
-import customError from 'customError.js'
+// Middlewares
+import { schemaHandler } from 'utils/middlewares.js'
+
+// Services
 import db from 'services/db.js'
+
+// Schemas
+import { getSuggestions } from 'features/suggestions/schema.js'
 
 const app = express.Router()
 
-app.get('/', async (req, res, next) => {
+app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
   const { search } = req.query
 
   try {
-    if (!search) {
-      throw customError('Missing query', ERROR_CODES.MISSING_DATA)
-    }
-
     // https://stackoverflow.com/questions/60257510/postgres-node-search-query-using-like-how-to-set
     // https://www.postgresqltutorial.com/postgresql-coalesce/
     const query = `

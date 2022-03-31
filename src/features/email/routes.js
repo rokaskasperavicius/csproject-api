@@ -1,6 +1,6 @@
 import express from 'express'
 
-import sendEmail from 'email.js'
+import sendEmail from 'utils/email.js'
 import db from 'services/db.js'
 
 const app = express.Router()

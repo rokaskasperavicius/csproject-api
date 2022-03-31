@@ -2,19 +2,20 @@ import express from 'express'
 import sslRedirect from 'heroku-ssl-redirect'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
-import axios from 'axios'
 import favicon from 'serve-favicon'
-import path from 'path'
 import 'dotenv/config'
 
 const app = express()
 app.use(favicon('./public/favicon.ico'))
 
-// Routes
-import suggestionsRouter from 'routes/suggestions.js'
-import categoriesRouter from 'routes/categories.js'
-import productsRouter from 'routes/products.js'
-import emailRouter from 'routes/email.js'
+// Features
+import suggestionsRouter from 'features/suggestions/routes'
+import categoriesRouter from 'features/categories/routes'
+import productsRouter from 'features/products/routes'
+import emailRouter from 'features/email/routes'
+
+// Middlewares
+import { errorHandler } from 'utils/middlewares'
 
 // Swagger
 import swagger from 'swagger/index.js'
@@ -50,51 +51,8 @@ app.all('*', (req, res, next) => {
   })
 })
 
-import os from 'os'
-
 // Handle all errors
-app.use(async (error, req, res, next) => {
-  console.log(error.stack)
-  // const errorr = new Error('Test')
-
-  const { ip } = req
-  const browser = req.headers['user-agent']
-  const host = os.hostname()
-
-  axios.post(process.env.DISCORD_WEBHOOK, {
-    content: '```' + error.stack + '```',
-    embeds: [
-      {
-        color: 14362664,
-        fields: [],
-        timestamp: new Date().toISOString(),
-        fields: [
-          {
-            name: 'IP',
-            value: ip,
-            inline: true,
-          },
-          {
-            name: 'Browser',
-            value: browser,
-            inline: true,
-          },
-        ],
-        footer: {
-          text: 'Server',
-          icon_url:
-            'https://cdn.iconscout.com/icon/free/png-256/node-js-1174925.png',
-        },
-      },
-    ],
-  })
-
-  res.status(error.status || 500).json({
-    success: false,
-    errorCode: error.errorCode,
-    errorText: error.message,
-  })
-})
+app.use(errorHandler)
 
 // Setup server
 const port = process.env.PORT || 5000

@@ -1,5 +1,5 @@
 const ERROR_CODES = {
-  UNKNOWN: 1,
+  DEFAULT: 1,
   MISSING_DATA: 2,
   INVALID_DATA: 3,
 }
