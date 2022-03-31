@@ -51,9 +51,6 @@ app.all('*', (req, res, next) => {
   })
 })
 
-const a = undefined
-a.toLowerCase()
-
 // Handle all errors
 app.use(errorHandler)
 
