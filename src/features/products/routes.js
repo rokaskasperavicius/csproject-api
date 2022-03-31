@@ -17,18 +17,20 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
    * seatch - search from all filtered products (default = no search)
    * orderby - order all results by a column (default = name)
    * isinverted - asc or desc for order by (default = false)
+   *
+   * https://www.postgresql.org/docs/current/textsearch-intro.html
    */
   try {
     const { filter, search, orderby, direction } = req.query
     const query = `
       SELECT P.id, P.name, P.note, P.expiry_date as "expiryDate"
-        FROM products P
+        FROM productss P
         JOIN subcategories SC ON SC.id = P.subcategory_id
         JOIN categories C ON C.id = SC.category_id
         WHERE
           ($1::integer[] IS NULL OR P.subcategory_id = ANY($1))
         AND
-          ($2::text IS NULL OR to_tsvector('english', P.name || ' ' || P.note || ' ' || SC.name || ' ' || C.name) @@ plainto_tsquery('english', $2))
+          ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || C.name) @@ $2)
         ORDER BY ${orderby} ${direction};
       `
     const values = [filter && [...filter.split(',')], search]
@@ -38,7 +40,6 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
       data,
     })
   } catch (err) {
-    console.log('1')
     next(err)
   }
 })

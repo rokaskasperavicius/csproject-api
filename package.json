@@ -8,11 +8,10 @@
     "npm": "=8.3.x"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
-    "dev": "nodemon src --exec babel src -d dist",
+    "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src -d dist",
-    "prepare": "husky install",
-    "serve": "node dist/index.js"
+    "serve": "node dist/index.js",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",

@@ -57,4 +57,5 @@ app.use(errorHandler)
 // Setup server
 const port = process.env.PORT || 5000
 
+console.log('Server ready on port ' + port)
 app.listen(port)

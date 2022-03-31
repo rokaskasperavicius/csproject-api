@@ -1,8 +1,9 @@
 import * as pg from 'pg'
 
-const { Pool } = pg.default
+// Utils
+import { PSQL_CODES } from 'utils/constants.js'
 
-import ERROR_CODES from 'utils/constants.js'
+const { Pool } = pg.default
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -15,7 +16,7 @@ const pool = new Pool({
 const handlePostgresError = (code) => {
   switch (code) {
     default:
-      return ERROR_CODES.UNKNOWN
+      return PSQL_CODES.DEFAULT
   }
 }
 
@@ -33,6 +34,7 @@ const db = async (query, values = []) => {
 
     // Read PostgreSQL errors
     error.errorCode = handlePostgresError(error.code)
+    error.message = 'PostgreSQL internal error'
     console.log(error)
     throw error
   } finally {
