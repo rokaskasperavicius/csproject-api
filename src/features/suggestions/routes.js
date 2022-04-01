@@ -52,7 +52,7 @@ app.post(
           VALUES($1, (SELECT id from subcategories WHERE name = $2), $3)
       `
 
-      const data = await db(query, [name, subCategoryName, recommended])
+      await db(query, [name, subCategoryName, recommended])
 
       res.json({
         success: true,

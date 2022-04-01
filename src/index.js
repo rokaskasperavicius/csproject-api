@@ -3,6 +3,7 @@ import sslRedirect from 'heroku-ssl-redirect'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import favicon from 'serve-favicon'
+import bodyParser from 'body-parser'
 import 'dotenv/config'
 
 const app = express()
@@ -35,6 +36,8 @@ app.use(cors(corsOptions))
 app.use(sslRedirect())
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
