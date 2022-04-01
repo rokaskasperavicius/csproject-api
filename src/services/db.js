@@ -34,11 +34,11 @@ const db = async (query, values = []) => {
 
     // Read PostgreSQL errors
     error.errorCode = handlePostgresError(error.code)
-    error.message = 'PostgreSQL internal error'
-    console.log(error)
+    // error.message = 'PostgreSQL internal error'
+
     throw error
   } finally {
-    client.end()
+    client.release()
   }
 }
 
