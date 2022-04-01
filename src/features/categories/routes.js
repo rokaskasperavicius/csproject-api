@@ -1,5 +1,4 @@
 import express from 'express'
-import joi from 'joi'
 
 // Services
 import db from 'services/db.js'
@@ -14,11 +13,11 @@ const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   try {
-    const data = await db('SELECT name FROM categories')
+    const data = await db('SELECT id, name FROM categories')
 
     res.json({
       success: true,
-      data: data.map(({ name }) => name),
+      data,
     })
   } catch (err) {
     next(err)
@@ -33,7 +32,7 @@ app.get(
 
     try {
       const query = `
-      SELECT name
+      SELECT id, name
         FROM subcategories
         WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
     `
@@ -42,7 +41,7 @@ app.get(
 
       res.json({
         success: true,
-        data: data.map(({ name }) => name),
+        data,
       })
     } catch (err) {
       next(err)
