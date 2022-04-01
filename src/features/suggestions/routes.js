@@ -22,7 +22,7 @@ app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
         FROM suggestions S
         JOIN subcategories SC ON S.subcategory_id = SC.id
         JOIN categories C ON C.id = SC.category_id
-        WHERE S.name LIKE CONCAT($1::text, '%')
+        WHERE S.name LIKE CONCAT('%', $1::text, '%')
         ORDER BY S.name ASC
       ;
     `
