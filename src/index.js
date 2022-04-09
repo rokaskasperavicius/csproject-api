@@ -24,7 +24,7 @@ import swagger from 'swagger/index.js'
 const corsOptions = {
   origin: [
     'http://localhost:3000',
-    'https://cs-project-products.herokuapp.com',
+    'https://csproject-dashboard.herokuapp.com',
   ],
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }

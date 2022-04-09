@@ -12,6 +12,7 @@ import { getSuggestions, postSuggestions } from 'features/suggestions/schema.js'
 const app = express.Router()
 
 app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
+  console.log(req.query)
   const { search } = req.query
 
   try {
@@ -40,8 +41,9 @@ app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
 
 app.post(
   '/',
-  schemaHandler(postSuggestions, 'body'),
+  // schemaHandler(postSuggestions, 'body'),
   async (req, res, next) => {
+    console.log(req.body)
     const { name, subCategoryName, recommended } = req.body
 
     try {
