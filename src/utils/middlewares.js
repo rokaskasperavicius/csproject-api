@@ -52,7 +52,7 @@ export const schemaHandler = (schema, property) => {
     try {
       req[property] = {
         ...req[property],
-        ...joi.attempt(req[property], schema),
+        ...joi.attempt(req[property], schema, { convert: true }),
       }
 
       next()

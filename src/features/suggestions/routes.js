@@ -41,17 +41,14 @@ app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
 
 app.post(
   '/',
-  // schemaHandler(postSuggestions, 'body'),
+  schemaHandler(postSuggestions, 'body'),
   async (req, res, next) => {
-    console.log(req.body)
     const { name, subCategoryName, recommended } = req.body
 
     try {
-      // https://stackoverflow.com/questions/60257510/postgres-node-search-query-using-like-how-to-set
-      // https://www.postgresqltutorial.com/postgresql-coalesce/
       const query = `
         INSERT INTO suggestions(name, subcategory_id, recommended)
-          VALUES($1, (SELECT id from subcategories WHERE name = $2), $3)
+          VALUES(LOWER($1), (SELECT id from subcategories WHERE name = $2), LOWER($3))
       `
 
       await db(query, [name, subCategoryName, recommended])

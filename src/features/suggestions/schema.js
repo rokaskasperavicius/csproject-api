@@ -7,5 +7,5 @@ export const getSuggestions = joi.object({
 export const postSuggestions = joi.object({
   name: joi.string().required(),
   subCategoryName: joi.string().required(),
-  recommended: joi.string(),
+  recommended: joi.string().empty('').default(null),
 })

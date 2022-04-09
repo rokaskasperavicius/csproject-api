@@ -13,8 +13,10 @@ const pool = new Pool({
   },
 })
 
-const handlePostgresError = (code) => {
-  switch (code) {
+const handlePostgresError = (constraint) => {
+  switch (constraint) {
+    case 'suggestions_name_key':
+      return PSQL_CODES.SUGGESTIONS_NAME_UNIQUE
     default:
       return PSQL_CODES.DEFAULT
   }
@@ -33,8 +35,9 @@ const db = async (query, values = []) => {
      */
 
     // Read PostgreSQL errors
-    error.errorCode = handlePostgresError(error.code)
-    // error.message = 'PostgreSQL internal error'
+    error.errorCode = handlePostgresError(error?.constraint)
+    error.status = 400
+    error.message = 'PostgreSQL internal error'
 
     throw error
   } finally {
