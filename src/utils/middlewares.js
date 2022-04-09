@@ -8,33 +8,33 @@ export function errorHandler(error, req, res, next) {
   const { ip } = req
   const browser = req.headers['user-agent']
 
-  axios.post(process.env.DISCORD_WEBHOOK, {
-    content: '```' + error.stack + '```',
-    embeds: [
-      {
-        color: 14362664,
-        fields: [],
-        timestamp: new Date().toISOString(),
-        fields: [
-          {
-            name: 'IP',
-            value: ip,
-            inline: true,
-          },
-          {
-            name: 'Browser',
-            value: browser,
-            inline: true,
-          },
-        ],
-        footer: {
-          text: 'Server',
-          icon_url:
-            'https://cdn.iconscout.com/icon/free/png-256/node-js-1174925.png',
-        },
-      },
-    ],
-  })
+  // axios.post(process.env.DISCORD_WEBHOOK, {
+  //   content: '```' + error.stack + '```',
+  //   embeds: [
+  //     {
+  //       color: 14362664,
+  //       fields: [],
+  //       timestamp: new Date().toISOString(),
+  //       fields: [
+  //         {
+  //           name: 'IP',
+  //           value: ip,
+  //           inline: true,
+  //         },
+  //         {
+  //           name: 'Browser',
+  //           value: browser,
+  //           inline: true,
+  //         },
+  //       ],
+  //       footer: {
+  //         text: 'Server',
+  //         icon_url:
+  //           'https://cdn.iconscout.com/icon/free/png-256/node-js-1174925.png',
+  //       },
+  //     },
+  //   ],
+  // })
 
   const status = error.status || 500
   const code = error.errorCode || PSQL_CODES.DEFAULT
