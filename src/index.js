@@ -35,6 +35,7 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'https://csproject-dashboard.herokuapp.com',
+    'https://cs-project-client.herokuapp.com',
   ],
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
