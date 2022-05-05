@@ -13,7 +13,8 @@ const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   try {
-    const data = await db('SELECT id, name FROM categories')
+    const query = 'SELECT DISTINCT(category_name) as name FROM subcategories'
+    const data = await db(query)
 
     res.json({
       success: true,
@@ -32,12 +33,12 @@ app.get(
 
     try {
       const query = `
-      SELECT id, name
-        FROM subcategories
-        WHERE category_id = (SELECT id FROM categories WHERE name = '${categoryName.toLowerCase()}')
-    `
+        SELECT name
+          FROM subcategories
+          WHERE category_name = $1
+      `
 
-      const data = await db(query)
+      const data = await db(query, [categoryName])
 
       res.json({
         success: true,

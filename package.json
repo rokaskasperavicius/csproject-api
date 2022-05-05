@@ -8,7 +8,7 @@
     "npm": "=8.3.x"
   },
   "scripts": {
-    "dev": "open http://localhost:5000 && nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
     "build": "babel src -d dist",
     "serve": "node dist/index.js",
     "prepare": "husky install"

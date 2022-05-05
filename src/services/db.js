@@ -37,7 +37,14 @@ const db = async (query, values = []) => {
     // Read PostgreSQL errors
     error.errorCode = handlePostgresError(error?.constraint)
     error.status = 400
-    error.message = 'PostgreSQL internal error'
+
+    /**
+     * Re-write the database error message if it is production environment to not show any sensative database information
+     * If it is development, keep the exact error for debugging purposes
+     */
+    if (process.env.NODE_ENV === 'production') {
+      error.message = 'PostgreSQL internal error'
+    }
 
     throw error
   } finally {

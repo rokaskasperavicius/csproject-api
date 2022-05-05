@@ -22,18 +22,19 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
    */
   try {
     const { filter, search, orderby, direction } = req.query
+
     const query = `
-      SELECT P.id, P.name, P.note, P.expiry_date as "expiryDate"
+      SELECT P.name, P.note, P.expiry_date as "expiryDate"
         FROM products P
-        JOIN subcategories SC ON SC.id = P.subcategory_id
-        JOIN categories C ON C.id = SC.category_id
+        JOIN subcategories SC ON SC.name = P.subcategory_name
         WHERE
-          ($1::integer[] IS NULL OR P.subcategory_id = ANY($1))
+          ($1::text[] IS NULL OR P.subcategory_name = ANY($1))
         AND
-          ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || C.name) @@ $2)
+          ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || SC.category_name) @@ $2)
         ORDER BY ${orderby} ${direction};
       `
     const values = [filter && [...filter.split(',')], search]
+
     const data = await db(query, values)
     res.json({
       success: true,
@@ -47,25 +48,13 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
 app.post('/', schemaHandler(postProducts, 'body'), async (req, res, next) => {
   try {
     const { subCategoryName, name, note, expiryDate } = req.body
-    const userId = 4
 
     const query = `
-      INSERT INTO products(subcategory_id, user_id, name, note, expiry_date)
-        VALUES(
-        (SELECT id
-          FROM subcategories
-          WHERE name = $1
-        ),
-        $2, $3, $4, $5)
+      INSERT INTO products(subcategory_name, name, note, expiry_date)
+        VALUES($1, $2, $3, $4)
       ;
     `
-    const values = [
-      subCategoryName.toLowerCase(),
-      userId,
-      name.toLowerCase(),
-      note,
-      expiryDate,
-    ]
+    const values = [subCategoryName, name, note, expiryDate]
 
     await db(query, values)
 
