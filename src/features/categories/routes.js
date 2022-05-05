@@ -13,7 +13,8 @@ const app = express.Router()
 
 app.get('/', async (req, res, next) => {
   try {
-    const query = 'SELECT DISTINCT(category_name) as name FROM subcategories'
+    const query =
+      'SELECT DISTINCT(category_name) as name FROM subcategories ORDER BY category_name ASC'
     const data = await db(query)
 
     res.json({
@@ -36,6 +37,7 @@ app.get(
         SELECT name
           FROM subcategories
           WHERE category_name = $1
+          ORDER BY name ASC
       `
 
       const data = await db(query, [categoryName])
