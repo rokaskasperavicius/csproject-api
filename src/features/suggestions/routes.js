@@ -12,7 +12,6 @@ import { getSuggestions, postSuggestions } from 'features/suggestions/schema.js'
 const app = express.Router()
 
 app.get('/', schemaHandler(getSuggestions, 'query'), async (req, res, next) => {
-  console.log(req.query)
   const { search } = req.query
 
   try {
