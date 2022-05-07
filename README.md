@@ -38,7 +38,7 @@ In your prefered terminal do:
 
 Deployment happens automatically when the `main` branch receives new commits.
 
-The website can be found [here](https://cs-project-server.herokuapp.com/).
+The API can be found on [https://csproject-api.herokuapp.com](https://csproject-api.herokuapp.com/).
 
 ### April 14th, 2022 Update
 
