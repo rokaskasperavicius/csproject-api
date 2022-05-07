@@ -57,7 +57,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/email', emailRouter)
 app.use('/sql', sqlRouter)
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
+app.use('/docss', swaggerUi.serve, swaggerUi.setup(swagger))
 
 app.get('/', (req, res) => {
   res.redirect('/docs')

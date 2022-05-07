@@ -4,8 +4,9 @@
   - [Requirements ⚙️](#requirements-️)
   - [Starting the project 🛠](#starting-the-project-)
   - [Server structure 🔒](#server-structure-)
-    - [(W.I.P) ER Diagram of the database](#wip-er-diagram-of-the-database)
+    - [ER Diagram of the database](#er-diagram-of-the-database)
   - [Deploy 🚀](#deploy-)
+    - [](#)
 
 ## Requirements ⚙️
 
@@ -22,18 +23,21 @@ In your preffered terminal do:
 2. `cd cs-project-server`
 3. `npm install`
 4. `npm run dev`
-5. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
+5. Wait a few seconds for babel to transpile the code
+6. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
 
 ## Server structure 🔒
 
 `index.js` is the starting file
 
-### (W.I.P) ER Diagram of the database
+### ER Diagram of the database
 
-![Alt text](public/er-diagram.png?raw=true 'Title')
+![Alt text](public/ER.png?raw=true 'Title')
 
 ## Deploy 🚀
 
 Deployment happens automatically when the `main` branch receives new commits.
 
 The website can be found [here](https://cs-project-server.herokuapp.com/).
+
+###
