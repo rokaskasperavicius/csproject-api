@@ -42,7 +42,7 @@ The website can be found [here](https://cs-project-server.herokuapp.com/).
 
 ### April 14th, 2022 Update
 
-On April 13th, 2022 Heroku had a security breach ([Read updates here](https://status.heroku.com/incidents/2413)). Therefore, Heroku disabled GitHub integration until further notice.
+On April 13th, 2022 Heroku had a security breach ([Read updates here](https://status.heroku.com/incidents/2413)). Therefore, Heroku disabled GitHub integration from April 14th until further notice.
 
 As of right now, to deploy the API project you have to have access to the project on Heroku and have Heroku git remote set on your local machine.
 
