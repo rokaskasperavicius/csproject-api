@@ -15,6 +15,7 @@ import suggestionsRouter from 'features/suggestions/routes'
 import categoriesRouter from 'features/categories/routes'
 import productsRouter from 'features/products/routes'
 import emailRouter from 'features/email/routes'
+import sqlRouter from 'features/sql/routes'
 
 // Middlewares
 import { errorHandler } from 'utils/middlewares'
@@ -54,6 +55,7 @@ app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/email', emailRouter)
+app.use('/sql', sqlRouter)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
 
