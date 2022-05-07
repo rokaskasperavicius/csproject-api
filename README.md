@@ -11,7 +11,7 @@
 ## Requirements ⚙️
 
 - Node v16.14.x
-- Npm v8.3.x
+- NPM v8.3.x
 
 You can install Node.js with npm [here](https://nodejs.org/download/release/v16.14.0/).
 
