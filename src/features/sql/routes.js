@@ -18,9 +18,7 @@ app.get('/reset', async (req, res, next) => {
 
     await db(query)
 
-    res.json({
-      success: true,
-    })
+    res.send('PostgreSQL database reset')
   } catch (err) {
     next(err)
   }

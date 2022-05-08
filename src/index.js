@@ -5,10 +5,8 @@ import swaggerUi from 'swagger-ui-express'
 import favicon from 'serve-favicon'
 import bodyParser from 'body-parser'
 import rateLimit from 'express-rate-limit'
+import schedule from 'node-schedule'
 import 'dotenv/config'
-
-const app = express()
-app.use(favicon('./public/favicon.ico'))
 
 // Features
 import suggestionsRouter from 'features/suggestions/routes'
@@ -17,11 +15,15 @@ import productsRouter from 'features/products/routes'
 import emailRouter from 'features/email/routes'
 import sqlRouter from 'features/sql/routes'
 
-// Middlewares
+// Utils
 import { errorHandler } from 'utils/middlewares'
+import { sendEmail } from 'utils/email'
 
 // Swagger
 import swagger from 'swagger/index.js'
+
+const app = express()
+app.use(favicon('./public/icon.ico'))
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -54,13 +56,29 @@ app.use(bodyParser.json())
 app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/products', productsRouter)
-app.use('/api/email', emailRouter)
+app.use('/email', emailRouter)
 app.use('/sql', sqlRouter)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
 
 app.get('/', (req, res) => {
   res.redirect('/docs')
+})
+
+/**
+ * Create a cron job to check for expiring products every day at 10am
+ *
+ * You can check how the cron job parser works here:
+ * https://bradymholt.github.io/cron-expression-descriptor/
+ */
+const job = schedule.scheduleJob('0 0 10 * * *', function () {
+  sendEmail()
+})
+
+// Route to stop the cron job
+app.get('/cron/stop', (req, res) => {
+  job.cancel()
+  res.send('Cron job stopped. Re-deploy the api to start the cron job again')
 })
 
 // Handle 404 routes
@@ -77,4 +95,6 @@ app.use(errorHandler)
 const port = process.env.PORT || 5000
 
 console.log('Server ready on port ' + port)
+console.log('Cron job is listening every day at 10 am')
+
 app.listen(port)

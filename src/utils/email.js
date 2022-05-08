@@ -1,23 +1,63 @@
+// For templating html files
+import Handlebars from 'handlebars'
+
+// Libary to format date to a readable format
+import date from 'date-and-time'
+import ordinal from 'date-and-time/plugin/ordinal'
+
+// For reading files
+import fs from 'fs'
+
 // For sending emails
 import nodemailer from 'nodemailer'
 
-// For templating html emails
-import hbs from 'nodemailer-express-handlebars'
+// Services
+import db from 'services/db.js'
 
-const sendEmail = async (template, subject, emailTo, context, isProd) => {
+// Function to get all products which will expire in the set range of days
+const getEmailInfo = async () => {
+  // Query to get email config informatiom
+  const configQuery = 'SELECT email, name, range FROM config'
+  const config = await db(configQuery)
+
+  const { range, name, email } = config[0]
+
+  const query = `
+    SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
+      FROM products
+      WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date AND notified IS FALSE
+      ORDER BY expiry_date ASC;
+  `
+  const data = await db(query, [range])
+
+  return {
+    name,
+    email,
+    range,
+    products: data,
+  }
+}
+
+export const sendEmail = async () => {
+  const { name, email, products, range } = await getEmailInfo()
+
+  // Don't send an email if there aren't any expiring products
+  if (!products || products.length === 0) {
+    return
+  }
+
   let mailConfig
+  const isProduction = process.env.NODE_ENV === 'production'
 
-  // Configs
-  const fromEmail = 'no-reply@csproject.com'
-
-  const prodUser = 'goodname258@gmail.com'
-  const testUser = '06f5d18fe37d94'
-
-  if (isProd) {
+  /**
+   * If the environment is production, send the email to real user.
+   * Otherwise, send the email to the test environment.
+   */
+  if (isProduction) {
     mailConfig = {
       service: 'SendinBlue',
       auth: {
-        user: prodUser,
+        user: process.env.PROD_EMAIL_USER,
         pass: process.env.PROD_EMAIL_AUTH,
       },
     }
@@ -26,35 +66,45 @@ const sendEmail = async (template, subject, emailTo, context, isProd) => {
       host: 'smtp.mailtrap.io',
       port: 2525,
       auth: {
-        user: testUser,
-        pass: process.env.TEST_EMAIL_AUTH,
+        user: process.env.DEV_EMAIL_USER,
+        pass: process.env.DEV_EMAIL_AUTH,
       },
     }
   }
 
+  // Create email transporter
   const transporter = nodemailer.createTransport(mailConfig)
 
-  // For templating
-  const handlebarOptions = {
-    viewEngine: {
-      partialsDir: './templates/',
-      defaultLayout: false,
-    },
-    viewPath: './templates/',
-    extName: '.html',
-  }
+  // Get the html template for the email
+  var source = fs.readFileSync('src/templates/expiring.html', 'utf8').toString()
 
-  transporter.use('compile', hbs(handlebarOptions))
+  // Load the html with the name and products using handlebars syntax
+  var template = Handlebars.compile(source)
+  var output = template({ name, products })
+
+  // Alow date formater to show ordinal notation of a day
+  date.plugin(ordinal)
 
   const mailOptions = {
-    from: fromEmail,
-    to: emailTo,
-    subject: subject,
-    template: template, // the name of the template file i.e email.handlebars
-    context,
+    from: process.env.FROM_EMAIL,
+    to: email,
+    subject: `${date.format(new Date(), 'MMMM DDD')} - Expiring products`,
+    html: output,
   }
 
-  return await transporter.sendMail(mailOptions)
-}
+  const transporterResponse = await transporter.sendMail(mailOptions)
 
-export default sendEmail
+  /**
+   * If the email was sent, set all expiring products as sent
+   * so the user doesn't get the notification about the product twice
+   * */
+  if (transporterResponse.accepted) {
+    const query = `
+      UPDATE products
+        SET notified = true
+        WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date
+    `
+
+    await db(query, [range])
+  }
+}
