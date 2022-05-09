@@ -23,6 +23,8 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
   try {
     const { filter, search, orderby, direction } = req.query
 
+    console.log(filter)
+
     const query = `
       SELECT P.name, P.note, P.expiry_date as "expiryDate"
         FROM products P
@@ -33,7 +35,8 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
           ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || SC.category_name) @@ $2)
         ORDER BY ${orderby} ${direction};
       `
-    const values = [filter && [...filter.split(',')], search]
+    const values = [filter && [filter], search]
+    console.log(values)
 
     const data = await db(query, values)
     res.json({

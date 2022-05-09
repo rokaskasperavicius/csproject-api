@@ -10,8 +10,8 @@ const paths = {
         {
           name: 'filter',
           in: 'query',
-          description: 'Filter by subcategory ids.',
-          example: '1,3,6',
+          description: 'Filter by subcategory names',
+          example: 'Vegetables,Condiments & Spices',
         },
         {
           name: 'search',
@@ -51,13 +51,11 @@ const paths = {
               },
               example: [
                 {
-                  id: 14,
                   name: 'carrots',
                   note: 'These are really good',
                   expiryDate: '2022-03-05T00:00:00.000Z',
                 },
                 {
-                  id: 34,
                   name: 'potatoes',
                   note: 'Insert a note here',
                   expiryDate: '2022-06-15T00:00:00.000Z',
