@@ -95,6 +95,6 @@ app.use(errorHandler)
 const port = process.env.PORT || 5000
 
 console.log('Server ready on port ' + port)
-console.log('Cron job is listening every day at 10 am')
+console.log('Cron job is listening every day at 8am UTC time')
 
 app.listen(port)
