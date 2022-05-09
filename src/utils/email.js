@@ -15,7 +15,7 @@ import nodemailer from 'nodemailer'
 import db from 'services/db.js'
 
 // Function to get all products which will expire in the set range of days
-const getEmailInfo = async () => {
+export const getEmailInfo = async () => {
   // Query to get email config informatiom
   const configQuery = 'SELECT email, name, range FROM config'
   const config = await db(configQuery)
