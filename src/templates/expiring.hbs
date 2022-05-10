@@ -1,0 +1,58 @@
+<!-- https://handlebarsjs.com/ -->
+
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <meta name='theme-color' content='#000000' />
+    <meta name='description' content='Email template for expiring products' />
+
+    <style>
+      h1, h2, h3, h4, h5, h5, p { margin: unset; } .name { width: 150px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .heading
+      { margin-top: 15px; } .marginTop, .description { margin-top: 10px; }
+    </style>
+  </head>
+  <body style='max-width: 450px'>
+    <h3>Hi, {{name}}!</h3>
+    <p class='description'>We are sending this email to remind you about your
+      expiring products.</p>
+
+    {{#if todayFood}}
+      <h4 class='heading'>These food products expire today:</h4>
+      {{#each todayFood}}
+        <p class='name'>
+          {{this.name}}
+        </p>
+      {{/each}}
+    {{/if}}
+
+    {{#if tomorrowFood}}
+      <h4 class='heading'>These food products expire tomorrow:</h4>
+      {{#each tomorrowFood}}
+        <p class='name'>
+          {{this.name}}
+        </p>
+      {{/each}}
+    {{/if}}
+
+    {{#if futureProducts}}
+      <h4 class='heading'>Comestics and Medicine expiring soon:</h4>
+      {{#each tomorrowFood}}
+        <p class='name'>
+          {{this.name}}
+        </p>
+      {{/each}}
+    {{/if}}
+
+    <p class='marginTop'>
+      Be sure not to forget them :). You can see all products
+      <a
+        target='_blank'
+        href='https://cs-project-client.herokuapp.com/'
+      >here</a>.
+    </p>
+    <p class='marginTop'>Best wishes,</p>
+    <p>CS Project Team</p>
+  </body>
+</html>

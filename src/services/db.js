@@ -15,8 +15,8 @@ const pool = new Pool({
 
 const handlePostgresError = (constraint) => {
   switch (constraint) {
-    case 'suggestions_name_key':
-      return PSQL_CODES.SUGGESTIONS_NAME_UNIQUE
+    case 'products_pkey':
+      return PSQL_CODES.PRODUCT_UNIQUE
     default:
       return PSQL_CODES.DEFAULT
   }

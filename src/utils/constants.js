@@ -1,6 +1,6 @@
 export const PSQL_CODES = {
   DEFAULT: 1,
-  SUGGESTIONS_NAME_UNIQUE: 2,
+  PRODUCT_UNIQUE: 2,
 }
 
 export const RESET_SQL_QUERY = `

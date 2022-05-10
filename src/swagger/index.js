@@ -14,10 +14,8 @@ const setup = {
 
 import productPaths from 'swagger/paths/products.js'
 import categoryPaths from 'swagger/paths/categories.js'
-import suggestionsPath from 'swagger/paths/suggestions.js'
 
 setup['paths'] = {
-  ...suggestionsPath,
   ...categoryPaths,
   ...productPaths,
 }

@@ -11,7 +11,7 @@ CREATE TABLE subcategories (
 CREATE TABLE products (
     name VARCHAR(99) NOT NULL,
     subcategory_name VARCHAR(99) NOT NULL REFERENCES subcategories(name) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    note VARCHAR(99),
+    note VARCHAR(999),
     expiry_date TIMESTAMP WITH TIME ZONE NOT NULL,
     notified boolean NOT NULL DEFAULT false,
     PRIMARY KEY(name, expiry_date)

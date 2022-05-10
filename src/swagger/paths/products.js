@@ -10,8 +10,8 @@ const paths = {
         {
           name: 'filter',
           in: 'query',
-          description: 'Filter by subcategory names',
-          example: 'Vegetables,Condiments & Spices',
+          description: 'Filter by one subcategory name.',
+          example: 'Vegetables',
         },
         {
           name: 'search',
@@ -20,80 +20,106 @@ const paths = {
             'Search for products in name, note, subcategory and category names.',
           example: 'red color, left frozen',
         },
-        {
-          name: 'orderby',
-          in: 'query',
-          description: 'Order products by either name, note or expiry date.',
-          default: 'name',
-          example: 'expiry',
-        },
-        {
-          name: 'direction',
-          in: 'query',
-          description:
-            'Specify which direction to order products (asc or desc)',
-          default: 'asc',
-          example: 'desc',
-        },
       ],
       responses: {
         200: {
-          description: 'Success',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'true',
-            },
-            data: {
-              type: 'array',
-              items: {
+          description: 'Success getting the products',
+          content: {
+            'application/json': {
+              schema: {
                 type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  data: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        name: {
+                          type: 'string',
+                        },
+                        note: {
+                          type: 'string',
+                        },
+                        expiryDate: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                  },
+                },
               },
-              example: [
-                {
-                  name: 'carrots',
-                  note: 'These are really good',
-                  expiryDate: '2022-03-05T00:00:00.000Z',
+              examples: {
+                success: {
+                  summary: 'The products were sent successfully',
+                  value: {
+                    success: true,
+                    data: [
+                      {
+                        name: 'carrots',
+                        note: 'These are really good',
+                        expiryDate: '2022-03-05T00:00:00.000Z',
+                      },
+                      {
+                        name: 'potatoes',
+                        note: 'Insert a note here',
+                        expiryDate: '2022-06-15T00:00:00.000Z',
+                      },
+                    ],
+                  },
                 },
-                {
-                  name: 'potatoes',
-                  note: 'Insert a note here',
-                  expiryDate: '2022-06-15T00:00:00.000Z',
-                },
-              ],
+              },
             },
-          }),
+          },
         },
-        500: {
-          description: 'Something went wrong',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'false',
+
+        400: {
+          description: 'Invalid client data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  errorCode: {
+                    type: 'integer',
+                  },
+                  errorText: {
+                    type: 'string',
+                  },
+                },
+              },
+              examples: {
+                unknown: {
+                  summary: 'Unknown error',
+                  description:
+                    'Some data is invalid. E.g. some query is not in the right format.',
+                  value: {
+                    success: false,
+                    errorCode: 1,
+                    errorText: 'search query is not allowed to be empty',
+                  },
+                },
+              },
             },
-            errorCode: {
-              type: 'integer',
-              example: 2,
-            },
-            errorText: {
-              type: 'string',
-              example: 'Invalid query',
-            },
-          }),
+          },
         },
       },
     },
     post: {
       tags: ['Products'],
-      summary: 'Add a new product',
-      description: 'Add a new product with a given category and sub-category.',
+      summary: 'Insert a new product',
       requestBody: {
         required: 'true',
         content: formatContent('object', {
           subCategoryName: {
             type: 'string',
-            description: 'Sub-category name',
-            example: 'vegetables',
+            description: 'Subcategory name',
+            example: 'Vegetables',
           },
           name: {
             type: 'string',
@@ -102,7 +128,7 @@ const paths = {
           },
           note: {
             type: 'string',
-            description: 'User specific custom note',
+            description: 'A custom note',
             example: 'These carrots are really good',
           },
           expiryDate: {
@@ -113,23 +139,71 @@ const paths = {
         }),
       },
       responses: {
-        200: {
-          description: 'Success',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'true',
+        201: {
+          description: 'The product was created',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                },
+              },
+              examples: {
+                success: {
+                  summary: 'The product created successfully',
+                  value: {
+                    success: true,
+                  },
+                },
+              },
             },
-          }),
+          },
         },
-        500: {
-          description: 'Something went wrong',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'false',
+        400: {
+          description: 'Invalid client data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  errorCode: {
+                    type: 'integer',
+                  },
+                  errorText: {
+                    type: 'string',
+                  },
+                },
+              },
+              examples: {
+                product: {
+                  summary: 'The product already exists',
+                  description:
+                    'The product with such expiry date already exists.',
+                  value: {
+                    success: false,
+                    errorCode: 2,
+                    errorText: 'PostgreSQL internal error',
+                  },
+                },
+                unknown: {
+                  summary: 'Unknown error',
+                  description:
+                    'Some sent data is invalid. E.g. the product name might be too long.',
+                  value: {
+                    success: false,
+                    errorCode: 1,
+                    errorText: 'PostgreSQL internal error',
+                  },
+                },
+              },
             },
-          }),
+          },
         },
       },
     },

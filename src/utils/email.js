@@ -17,32 +17,62 @@ import db from 'services/db.js'
 // Function to get all products which will expire in the set range of days
 export const getEmailInfo = async () => {
   // Query to get email config informatiom
-  const configQuery = 'SELECT email, name, range FROM config'
+  const configQuery = 'SELECT email, name FROM config'
   const config = await db(configQuery)
 
-  const { range, name, email } = config[0]
+  const { name, email } = config[0]
 
-  const query = `
-    SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
-      FROM products
-      WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date AND notified IS FALSE
-      ORDER BY expiry_date ASC;
+  // const todayQuery = `
+  //   SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
+  //     FROM products
+  //     WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date AND notified IS FALSE
+  //     ORDER BY expiry_date ASC;
+  // `
+
+  const todayQuery = `
+    SELECT P.name
+      FROM products P
+      JOIN subcategories SC ON P.subcategory_name = SC.name
+      WHERE CURRENT_DATE = P.expiry_date AND SC.category_name = 'Food';
   `
-  const data = await db(query, [range])
+
+  const tomorrowQuery = `
+    SELECT P.name
+      FROM products P
+      JOIN subcategories SC ON P.subcategory_name = SC.name
+      WHERE (CURRENT_DATE + INTERVAL '1 day') = P.expiry_date AND SC.category_name = 'Food';
+  `
+
+  const futureQuery = `
+    SELECT P.name
+      FROM products P
+      JOIN subcategories SC ON P.subcategory_name = SC.name
+      WHERE (CURRENT_DATE + INTERVAL '30 days') >= P.expiry_date AND SC.category_name <> 'Food' AND notified IS FALSE;
+  `
+
+  const todayFood = await db(todayQuery)
+  const tomorrowFood = await db(tomorrowQuery)
+  const futureProducts = await db(futureQuery)
 
   return {
     name,
     email,
-    range,
-    products: data,
+    todayFood,
+    tomorrowFood,
+    futureProducts,
   }
 }
 
 export const sendEmail = async () => {
-  const { name, email, products, range } = await getEmailInfo()
+  const { name, email, todayFood, tomorrowFood, futureProducts } =
+    await getEmailInfo()
 
   // Don't send an email if there aren't any expiring products
-  if (!products || products.length === 0) {
+  if (
+    todayFood.length === 0 &&
+    tomorrowFood.length === 0 &&
+    futureProducts.length === 0
+  ) {
     return
   }
 
@@ -76,11 +106,11 @@ export const sendEmail = async () => {
   const transporter = nodemailer.createTransport(mailConfig)
 
   // Get the html template for the email
-  var source = fs.readFileSync('src/templates/expiring.html', 'utf8').toString()
+  var source = fs.readFileSync('src/templates/expiring.hbs', 'utf8').toString()
 
   // Load the html with the name and products using handlebars syntax
   var template = Handlebars.compile(source)
-  var output = template({ name, products })
+  var output = template({ name, todayFood, tomorrowFood, futureProducts })
 
   // Alow date formater to show ordinal notation of a day
   date.plugin(ordinal)
@@ -97,14 +127,26 @@ export const sendEmail = async () => {
   /**
    * If the email was sent, set all expiring products as sent
    * so the user doesn't get the notification about the product twice
+   *
+   * https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-update-join/
    * */
   if (transporterResponse.accepted) {
     const query = `
       UPDATE products
         SET notified = true
-        WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date
+        FROM subcategories
+        WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
     `
 
-    await db(query, [range])
+    //   UPDATE (
+    //     SELECT * FR
+    //   )
+
+    //   SET notified = true
+    //     FROM products P
+    //     JOIN subcategories SC ON P.subcategory_name = SC.name
+    //     WHERE (CURRENT_DATE + INTERVAL '30 days') >= P.expiry_date AND SC.category_name <> 'Food';
+    // `
+    await db(query)
   }
 }

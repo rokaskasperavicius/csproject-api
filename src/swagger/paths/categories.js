@@ -46,7 +46,7 @@ const paths = {
           required: 'true',
           in: 'query',
           description: 'Category name.',
-          example: 'food',
+          example: 'Food',
         },
       ],
       responses: {

@@ -13,15 +13,13 @@ const app = express.Router()
 
 app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
   /**
-   * filter - filter all products by sub-category ids (default = all sub-categories)
-   * seatch - search from all filtered products (default = no search)
-   * orderby - order all results by a column (default = name)
-   * isinverted - asc or desc for order by (default = false)
+   * filter - filter all products by subcategory names (default = all subcategories)
+   * seatch - search all products based on product name, note, category name and subcategory name (default = no search)
    *
    * https://www.postgresql.org/docs/current/textsearch-intro.html
    */
   try {
-    const { filter, search, orderby, direction } = req.query
+    const { filter, search } = req.query
 
     console.log(filter)
 
@@ -30,13 +28,12 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
         FROM products P
         JOIN subcategories SC ON SC.name = P.subcategory_name
         WHERE
-          ($1::text[] IS NULL OR P.subcategory_name = ANY($1))
+          ($1::text IS NULL OR P.subcategory_name = $1)
         AND
           ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || SC.category_name) @@ $2)
-        ORDER BY ${orderby} ${direction};
+        ;
       `
-    const values = [filter && [filter], search]
-    console.log(values)
+    const values = [filter, search]
 
     const data = await db(query, values)
     res.json({
@@ -61,7 +58,7 @@ app.post('/', schemaHandler(postProducts, 'body'), async (req, res, next) => {
 
     await db(query, values)
 
-    res.json({ success: true })
+    res.status(201).json({ success: true })
   } catch (err) {
     next(err)
   }
