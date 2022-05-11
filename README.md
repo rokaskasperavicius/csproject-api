@@ -4,7 +4,7 @@
   - [Requirements ⚙️](#requirements-️)
   - [Starting the project 🛠](#starting-the-project-)
   - [API structure 🔒](#api-structure-)
-    - [ER Diagram of the database](#er-diagram-of-the-database)
+    - [Entity Relationship Diagram of the database](#entity-relationship-diagram-of-the-database)
   - [Deploy 🚀](#deploy-)
     - [April 14th, 2022 Update](#april-14th-2022-update)
 
@@ -28,9 +28,13 @@ In your prefered terminal do:
 
 ## API structure 🔒
 
-`index.js` is the starting file
+`index.js` is the starting file.
 
-### ER Diagram of the database
+Each route is under the `features` folder where it has a `routes` file for all routes and a `schema` file for all incoming query/body schemas.
+
+For swagger documentation each route has a file under `swagger/paths` directory. Please follow the [OpenAPI](https://swagger.io/specification/) specifications.
+
+### Entity Relationship Diagram of the database
 
 ![ER Diagram](public/ER.png?raw=true 'Title')
 
@@ -38,7 +42,7 @@ In your prefered terminal do:
 
 Deployment happens automatically when the `main` branch receives new commits.
 
-The API can be found on [https://csproject-api.herokuapp.com](https://csproject-api.herokuapp.com/).
+The deployed API can be found on [https://csproject-api.herokuapp.com](https://csproject-api.herokuapp.com/).
 
 ### April 14th, 2022 Update
 
@@ -46,4 +50,4 @@ On April 13th, 2022 Heroku had a security breach ([Read updates here](https://st
 
 As of right now, to deploy the API project you have to have access to the project on Heroku and have Heroku git remote set on your local machine.
 
-`git push heroku main` will push the changes from the main branch to Heroku where it will be deployed
+`git push heroku main` will push the changes from the main branch to Heroku where it will be deployed.

@@ -8,38 +8,76 @@ const paths = {
       description: 'Get all names of all existing categories',
       responses: {
         200: {
-          description: 'Success',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'true',
-            },
-            data: {
-              type: 'array',
-              items: {
-                type: 'string',
+          description: 'Success getting all categories',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  data: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                    },
+                  },
+                },
               },
-              example: ['foods', 'medicine'],
+              examples: {
+                success: {
+                  summary: 'The categories were sent successfully',
+                  value: {
+                    success: true,
+                    data: ['Food', 'Medicine', 'Cosmetics'],
+                  },
+                },
+              },
             },
-          }),
+          },
         },
-        500: {
-          description: 'Something went wrong',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'false',
+        400: {
+          description: 'Invalid client data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  errorCode: {
+                    type: 'integer',
+                  },
+                  errorText: {
+                    type: 'string',
+                  },
+                },
+              },
+              examples: {
+                unknown: {
+                  summary: 'Unknown error',
+                  description: 'Something went wrong',
+                  value: {
+                    success: false,
+                    errorCode: 1,
+                    errorText: 'PostgreSQL internal error',
+                  },
+                },
+              },
             },
-          }),
+          },
         },
       },
     },
   },
-  '/api/categories/sub-categories': {
+  '/api/categories/subcategories': {
     get: {
       tags: ['Categories'],
-      summary: 'Get all sub-categories',
-      description: 'Get all names of all existing sub-categories',
+      summary: 'Get all subcategories',
+      description:
+        'Get all names of all subcategories belonging to one category',
       parameters: [
         {
           name: 'categoryName',
@@ -51,29 +89,67 @@ const paths = {
       ],
       responses: {
         200: {
-          description: 'Success',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'true',
-            },
-            data: {
-              type: 'array',
-              items: {
-                type: 'string',
+          description: 'Success getting subcategories',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  data: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                    },
+                  },
+                },
               },
-              example: ['vegetables', 'fruits'],
+              examples: {
+                success: {
+                  summary: 'The subcategories were sent successfully',
+                  value: {
+                    success: true,
+                    data: ['Vegetables', 'Fruits'],
+                  },
+                },
+              },
             },
-          }),
+          },
         },
-        500: {
-          description: 'Something went wrong',
-          content: formatContent('object', {
-            success: {
-              type: 'boolean',
-              example: 'false',
+
+        400: {
+          description: 'Invalid client data',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  errorCode: {
+                    type: 'integer',
+                  },
+                  errorText: {
+                    type: 'string',
+                  },
+                },
+              },
+              examples: {
+                unknown: {
+                  summary: 'Unknown error',
+                  description: 'Something went wrong',
+                  value: {
+                    success: false,
+                    errorCode: 1,
+                    errorText: 'PostgreSQL internal error',
+                  },
+                },
+              },
             },
-          }),
+          },
         },
       },
     },

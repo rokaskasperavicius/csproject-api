@@ -5,8 +5,13 @@ import { sendEmail, getEmailInfo } from 'utils/email'
 const app = express.Router()
 
 app.get('/force', async (req, res) => {
-  await sendEmail()
-  res.send('Email sent if any products found to be expiring')
+  const success = await sendEmail()
+
+  if (success) {
+    res.send('Email sent')
+  }
+
+  res.send('No products are expiring')
 })
 
 app.get('/config', async (req, res, next) => {

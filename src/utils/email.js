@@ -22,13 +22,6 @@ export const getEmailInfo = async () => {
 
   const { name, email } = config[0]
 
-  // const todayQuery = `
-  //   SELECT name, to_char(expiry_date, 'YYYY-MM-DD') AS "expiryDate"
-  //     FROM products
-  //     WHERE (CURRENT_DATE + ($1 || ' days')::INTERVAL) >= expiry_date AND notified IS FALSE
-  //     ORDER BY expiry_date ASC;
-  // `
-
   const todayQuery = `
     SELECT P.name
       FROM products P
@@ -73,7 +66,7 @@ export const sendEmail = async () => {
     tomorrowFood.length === 0 &&
     futureProducts.length === 0
   ) {
-    return
+    return false
   }
 
   let mailConfig
@@ -125,8 +118,8 @@ export const sendEmail = async () => {
   const transporterResponse = await transporter.sendMail(mailOptions)
 
   /**
-   * If the email was sent, set all expiring products as sent
-   * so the user doesn't get the notification about the product twice
+   * If the email was sent, set all expiring medicine and cosmetics as sent
+   * so the user doesn't get the notification about the products twice
    *
    * https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-update-join/
    * */
@@ -137,16 +130,8 @@ export const sendEmail = async () => {
         FROM subcategories
         WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
     `
-
-    //   UPDATE (
-    //     SELECT * FR
-    //   )
-
-    //   SET notified = true
-    //     FROM products P
-    //     JOIN subcategories SC ON P.subcategory_name = SC.name
-    //     WHERE (CURRENT_DATE + INTERVAL '30 days') >= P.expiry_date AND SC.category_name <> 'Food';
-    // `
     await db(query)
   }
+
+  return true
 }
