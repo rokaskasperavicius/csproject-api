@@ -66,13 +66,17 @@ app.get('/', (req, res) => {
 })
 
 /**
- * Create a cron job to check for expiring products every day at 10am
+ * Create a cron job to check for expiring products every day at 8am UTC (0 0 8 * * *)
  *
  * You can check how the cron job parser works here:
  * https://bradymholt.github.io/cron-expression-descriptor/
  */
-const job = schedule.scheduleJob('0 0 8 * * *', function () {
-  sendEmail()
+const job = schedule.scheduleJob('0 0 8 * * *', async () => {
+  try {
+    await sendEmail()
+  } catch {
+    console.error('Cron job failed to send the email')
+  }
 })
 
 // Route to stop the cron job

@@ -4,26 +4,25 @@ import { sendEmail, getEmailInfo } from 'utils/email'
 
 const app = express.Router()
 
-app.get('/force', async (req, res) => {
-  const success = await sendEmail()
+app.get('/force', async (req, res, next) => {
+  try {
+    await sendEmail()
 
-  if (success) {
-    res.send('Email sent')
+    res.json({ success: true })
+  } catch (error) {
+    next(error)
   }
-
-  res.send('No products are expiring')
 })
 
 app.get('/config', async (req, res, next) => {
   try {
-    const { name, email, range } = await getEmailInfo()
+    const { name, email } = await getEmailInfo()
 
     res.json({
       success: true,
       data: {
         name,
         email,
-        range,
       },
     })
   } catch (err) {

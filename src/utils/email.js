@@ -1,6 +1,9 @@
 // For templating html files
 import Handlebars from 'handlebars'
 
+// Library for sending emails
+import sgMail from '@sendgrid/mail'
+
 // Libary to format date to a readable format
 import date from 'date-and-time'
 import ordinal from 'date-and-time/plugin/ordinal'
@@ -8,11 +11,10 @@ import ordinal from 'date-and-time/plugin/ordinal'
 // For reading files
 import fs from 'fs'
 
-// For sending emails
-import nodemailer from 'nodemailer'
-
 // Services
 import db from 'services/db.js'
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 // Function to get all products which will expire in the set range of days
 export const getEmailInfo = async () => {
@@ -69,35 +71,6 @@ export const sendEmail = async () => {
     return false
   }
 
-  let mailConfig
-  const isProduction = process.env.NODE_ENV === 'production'
-
-  /**
-   * If the environment is production, send the email to real user.
-   * Otherwise, send the email to the test environment.
-   */
-  if (isProduction) {
-    mailConfig = {
-      service: 'SendinBlue',
-      auth: {
-        user: process.env.PROD_EMAIL_USER,
-        pass: process.env.PROD_EMAIL_AUTH,
-      },
-    }
-  } else {
-    mailConfig = {
-      host: 'smtp.mailtrap.io',
-      port: 2525,
-      auth: {
-        user: process.env.DEV_EMAIL_USER,
-        pass: process.env.DEV_EMAIL_AUTH,
-      },
-    }
-  }
-
-  // Create email transporter
-  const transporter = nodemailer.createTransport(mailConfig)
-
   // Get the html template for the email
   var source = fs.readFileSync('src/templates/expiring.hbs', 'utf8').toString()
 
@@ -109,13 +82,13 @@ export const sendEmail = async () => {
   date.plugin(ordinal)
 
   const mailOptions = {
-    from: process.env.FROM_EMAIL,
+    from: 'cs.project.ruc@gmail.com',
     to: email,
     subject: `${date.format(new Date(), 'MMMM DDD')} - Expiring products`,
     html: output,
   }
 
-  const transporterResponse = await transporter.sendMail(mailOptions)
+  await sgMail.send(mailOptions)
 
   /**
    * If the email was sent, set all expiring medicine and cosmetics as sent
@@ -123,15 +96,11 @@ export const sendEmail = async () => {
    *
    * https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-update-join/
    * */
-  if (transporterResponse.accepted) {
-    const query = `
-      UPDATE products
-        SET notified = true
-        FROM subcategories
-        WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
-    `
-    await db(query)
-  }
-
-  return true
+  const query = `
+    UPDATE products
+      SET notified = true
+      FROM subcategories
+      WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
+  `
+  await db(query)
 }
