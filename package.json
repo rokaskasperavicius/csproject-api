@@ -25,7 +25,6 @@
     "handlebars": "^4.7.7",
     "heroku-ssl-redirect": "^0.1.1",
     "joi": "^17.6.0",
-    "node-discord-logger": "^1.2.1",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
