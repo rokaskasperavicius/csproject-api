@@ -1,9 +1,6 @@
 // For templating html files
 import Handlebars from 'handlebars'
 
-// Library for sending emails
-import sgMail from '@sendgrid/mail'
-
 // Libary to format date to a readable format
 import date from 'date-and-time'
 import ordinal from 'date-and-time/plugin/ordinal'
@@ -13,6 +10,9 @@ import fs from 'fs'
 
 // Services
 import db from 'services/db.js'
+
+// Library for sending emails
+import sgMail from '@sendgrid/mail'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 

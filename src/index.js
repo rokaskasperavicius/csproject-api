@@ -34,11 +34,14 @@ const limiter = rateLimit({
 
 app.use(limiter)
 
+// Allowed urls for accessing our API
 const corsOptions = {
   origin: [
+    // For development
     'http://localhost:3000',
-    'https://csproject-dashboard.herokuapp.com',
-    'https://cs-project-client.herokuapp.com',
+
+    // For production
+    'https://csproject-client.herokuapp.com',
   ],
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
