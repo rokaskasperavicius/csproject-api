@@ -21,8 +21,6 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
   try {
     const { filter, search } = req.query
 
-    console.log(filter)
-
     const query = `
       SELECT P.name, P.note, P.expiry_date as "expiryDate"
         FROM products P
@@ -30,7 +28,7 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
         WHERE
           ($1::text IS NULL OR P.subcategory_name = $1)
         AND
-          ($2::text IS NULL OR CONCAT(P.name || ' ' || P.note || ' ' || SC.name || ' ' || SC.category_name) @@ $2)
+          ($2::text IS NULL OR CONCAT_WS(' ', P.name, P.note, SC.name, SC.category_name) @@ $2)
         ;
       `
     const values = [filter, search]
