@@ -59,7 +59,7 @@ app.use(bodyParser.json())
 app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
 app.use('/api/products', productsRouter)
-app.use('/email', emailRouter)
+app.use('/api/email', emailRouter)
 app.use('/sql', sqlRouter)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
