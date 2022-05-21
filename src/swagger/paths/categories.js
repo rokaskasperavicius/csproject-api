@@ -118,7 +118,6 @@ const paths = {
             },
           },
         },
-
         400: {
           description: 'Invalid client data',
           content: {

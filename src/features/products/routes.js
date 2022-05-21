@@ -7,7 +7,11 @@ import { schemaHandler } from 'utils/middlewares.js'
 import db from 'services/db.js'
 
 // Schemas
-import { getProducts, postProducts } from 'features/products/schema.js'
+import {
+  getProducts,
+  postProducts,
+  deleteProduct,
+} from 'features/products/schema.js'
 
 const app = express.Router()
 
@@ -61,5 +65,23 @@ app.post('/', schemaHandler(postProducts, 'body'), async (req, res, next) => {
     next(err)
   }
 })
+
+app.delete(
+  '/',
+  schemaHandler(deleteProduct, 'body'),
+  async (req, res, next) => {
+    try {
+      const { name, expiryDate } = req.body
+
+      const query = 'DELETE FROM products WHERE name = $1 AND expiry_date = $2;'
+
+      await db(query, [name, expiryDate])
+
+      res.status(200).json({ success: true })
+    } catch (error) {
+      next(error)
+    }
+  }
+)
 
 export default app

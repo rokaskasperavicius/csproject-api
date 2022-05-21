@@ -11,3 +11,8 @@ export const postProducts = joi.object({
   note: joi.string(),
   expiryDate: joi.string().isoDate(),
 })
+
+export const deleteProduct = joi.object({
+  name: joi.string().required(),
+  expiryDate: joi.string().isoDate(),
+})

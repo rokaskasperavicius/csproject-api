@@ -74,7 +74,6 @@ const paths = {
             },
           },
         },
-
         400: {
           description: 'Invalid client data',
           content: {
@@ -134,7 +133,7 @@ const paths = {
           expiryDate: {
             type: 'string',
             description: 'ISO 8601 compliant product expiry date',
-            example: '2022-03-05T23:55:44.135Z',
+            example: '2022-03-05T00:00:00.000Z',
           },
         }),
       },
@@ -201,6 +200,78 @@ const paths = {
                     errorText: 'PostgreSQL internal error',
                   },
                 },
+              },
+            },
+          },
+        },
+      },
+    },
+    delete: {
+      tags: ['Products'],
+      summary: 'Delete a product',
+      requestBody: {
+        required: 'true',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string',
+                },
+                expiryDate: {
+                  type: 'string',
+                },
+              },
+            },
+            example: {
+              name: 'Carrots',
+              expiryDate: '2022-03-05T00:00:00.000Z',
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: 'The product was deleted',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                },
+              },
+              example: {
+                success: true,
+              },
+            },
+          },
+        },
+        400: {
+          description: 'Something went wrong',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  success: {
+                    type: 'boolean',
+                  },
+                  errorCode: {
+                    type: 'integer',
+                  },
+                  errorText: {
+                    type: 'string',
+                  },
+                },
+              },
+              example: {
+                success: false,
+                errorCode: 1,
+                errorText: 'PostgreSQL internal error',
               },
             },
           },
