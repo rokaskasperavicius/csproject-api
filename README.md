@@ -20,7 +20,7 @@ You can install Node.js with npm [here](https://nodejs.org/download/release/v16.
 In your prefered terminal do:
 
 1. `git clone git@github.com:rokaskasperavicius/csproject-api.git`
-2. `cd cs-project-server`
+2. `cd csproject-api`
 3. `npm install`
 4. `npm run dev`
 5. Wait a few seconds for babel to transpile the code
