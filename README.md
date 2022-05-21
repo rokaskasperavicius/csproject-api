@@ -50,4 +50,4 @@ On April 13th, 2022 Heroku had a security breach ([Read updates here](https://st
 
 As of right now, to deploy the API project you have to have access to the project on Heroku and have Heroku git remote set on your local machine.
 
-`git push heroku main` will push the changes from the main branch to Heroku where it will be deployed.
+`git push heroku` will push the changes from the main branch to Heroku where it will be deployed.
