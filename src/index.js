@@ -42,6 +42,7 @@ const corsOptions = {
 
     // For production
     'https://csproject-client.herokuapp.com',
+    'http://csproject-client.herokuapp.com',
   ],
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 }
