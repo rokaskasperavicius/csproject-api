@@ -9,11 +9,10 @@ import schedule from 'node-schedule'
 import 'dotenv/config'
 
 // Features
-import suggestionsRouter from 'features/suggestions/routes'
 import categoriesRouter from 'features/categories/routes'
+import databaseRouter from 'features/database/routes'
 import productsRouter from 'features/products/routes'
 import emailRouter from 'features/email/routes'
-import sqlRouter from 'features/sql/routes'
 
 // Utils
 import { errorHandler } from 'utils/middlewares'
@@ -57,11 +56,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/api/suggestions', suggestionsRouter)
 app.use('/api/categories', categoriesRouter)
+app.use('/api/database', databaseRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/email', emailRouter)
-app.use('/sql', sqlRouter)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger))
 

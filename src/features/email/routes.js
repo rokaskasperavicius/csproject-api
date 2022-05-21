@@ -14,16 +14,6 @@ import { updateConfig } from 'features/email/schema.js'
 
 const app = express.Router()
 
-app.get('/force', async (req, res, next) => {
-  try {
-    await sendEmail()
-
-    res.json({ success: true })
-  } catch (error) {
-    next(error)
-  }
-})
-
 app.get('/config', async (req, res, next) => {
   try {
     const { name, email } = await getEmailInfo()
@@ -57,5 +47,15 @@ app.put(
     }
   }
 )
+
+app.post('/force', async (req, res, next) => {
+  try {
+    await sendEmail()
+
+    res.json({ success: true })
+  } catch (error) {
+    next(error)
+  }
+})
 
 export default app

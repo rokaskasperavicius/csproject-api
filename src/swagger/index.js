@@ -12,12 +12,16 @@ const setup = {
   },
 }
 
-import productPaths from 'swagger/paths/products.js'
-import categoryPaths from 'swagger/paths/categories.js'
+import productPaths from 'swagger/paths/products'
+import categoryPaths from 'swagger/paths/categories'
+import databasePaths from 'swagger/paths/database'
+import emailPaths from 'swagger/paths/email'
 
 setup['paths'] = {
   ...categoryPaths,
   ...productPaths,
+  ...emailPaths,
+  ...databasePaths,
 }
 
 export default setup
