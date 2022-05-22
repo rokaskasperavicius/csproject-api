@@ -22,9 +22,10 @@ In your prefered terminal do:
 1. `git clone git@github.com:rokaskasperavicius/csproject-api.git`
 2. `cd csproject-api`
 3. `npm install`
-4. `npm run dev`
-5. Wait a few seconds for babel to transpile the code
-6. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
+4. `npm run setup`
+6. `npm run dev`
+7. Wait a few seconds for babel to transpile the code
+8. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
 
 ## API structure 🔒
 
