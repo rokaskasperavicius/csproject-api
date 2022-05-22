@@ -1,6 +1,6 @@
-# API application for CS Project
+# API for CS Project
 
-- [API application for CS Project](#api-application-for-cs-project)
+- [API for CS Project](#api-for-cs-project)
   - [Requirements ⚙️](#requirements-️)
   - [Starting the project 🛠](#starting-the-project-)
   - [API structure 🔒](#api-structure-)

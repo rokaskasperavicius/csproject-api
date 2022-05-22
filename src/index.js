@@ -73,18 +73,13 @@ app.get('/', (req, res) => {
  * You can check how the cron job parser works here:
  * https://bradymholt.github.io/cron-expression-descriptor/
  */
-const job = schedule.scheduleJob('0 0 8 * * *', async () => {
+schedule.scheduleJob('0 0 8 * * *', async () => {
   try {
     await sendEmail()
+    console.log('[email]: Cron job successfully sent the email')
   } catch {
     console.error('Cron job failed to send the email')
   }
-})
-
-// Route to stop the cron job
-app.get('/cron/stop', (req, res) => {
-  job.cancel()
-  res.send('Cron job stopped. Re-deploy the api to start the cron job again')
 })
 
 // Handle 404 routes
@@ -101,6 +96,6 @@ app.use(errorHandler)
 const port = process.env.PORT || 5000
 
 console.log('Server ready on port ' + port)
-console.log('Cron job is listening every day at 8am UTC time')
+console.log('[email]: Cron job is listening every day at 8am UTC time')
 
 app.listen(port)

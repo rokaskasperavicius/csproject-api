@@ -51,6 +51,7 @@ app.put(
 app.post('/force', async (req, res, next) => {
   try {
     await sendEmail()
+    console.log('[email]: Successfully forced the email')
 
     res.json({ success: true })
   } catch (error) {
