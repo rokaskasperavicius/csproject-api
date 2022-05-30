@@ -20,12 +20,10 @@ In your prefered terminal do:
 
 1. `git clone git@github.com:rokaskasperavicius/csproject-api.git`
 2. `cd csproject-api`
-3. It is important that you create a `.env` file in the root folder and insert environment variables needed to access the database and send emails.
-
-4. `npm install`
-5. `npm run dev`
-6. Wait a few seconds for babel to transpile the code
-7. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
+3. `npm install`
+4. `npm run dev`
+5. Wait a few seconds for babel to transpile the code
+6. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
 
 ## API structure 🔒
 
