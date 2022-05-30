@@ -4,7 +4,7 @@ import joi from 'joi'
 import { PSQL_CODES } from 'utils/constants'
 
 export const errorHandler = (error, req, res, next) => {
-  const status = error.status || 500
+  const status = error.status || 400
   const code = error.errorCode || PSQL_CODES.DEFAULT
   const text = error.message || 'Something went wrong'
 
