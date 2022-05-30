@@ -21,18 +21,11 @@ In your prefered terminal do:
 1. `git clone git@github.com:rokaskasperavicius/csproject-api.git`
 2. `cd csproject-api`
 3. It is important that you create a `.env` file in the root folder and insert environment variables needed to access the database and send emails.
-4. After creating the `.env` file insert these variables:
 
-```
-DATABASE_URL=postgres://uwusarbioyyihg:286d366d6c9a509942a37bdc167c45a78969b9f260260cdb283b5b65f3eab9e2@ec2-54-195-141-170.eu-west-1.compute.amazonaws.com:5432/dbm2pj82np6pep
-
-SENDGRID_API_KEY=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
-```
-
-5. `npm install`
-6. `npm run dev`
-7. Wait a few seconds for babel to transpile the code
-8. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
+4. `npm install`
+5. `npm run dev`
+6. Wait a few seconds for babel to transpile the code
+7. Open [http://localhost:5000/](http://localhost:5000/) to see the server application
 
 ## API structure 🔒
 
