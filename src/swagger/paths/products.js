@@ -46,6 +46,9 @@ const paths = {
                         expiryDate: {
                           type: 'string',
                         },
+                        categoryName: {
+                          type: 'string',
+                        },
                       },
                     },
                   },
@@ -61,11 +64,13 @@ const paths = {
                         name: 'carrots',
                         note: 'These are really good',
                         expiryDate: '2022-03-05T00:00:00.000Z',
+                        categoryName: 'Food',
                       },
                       {
                         name: 'potatoes',
                         note: 'Insert a note here',
                         expiryDate: '2022-06-15T00:00:00.000Z',
+                        categoryName: 'Food',
                       },
                     ],
                   },

@@ -26,7 +26,7 @@ app.get('/', schemaHandler(getProducts, 'query'), async (req, res, next) => {
     const { filter, search } = req.query
 
     const query = `
-      SELECT P.name, P.note, P.expiry_date as "expiryDate"
+      SELECT P.name, P.note, P.expiry_date as "expiryDate", SC.category_name as "categoryName"
         FROM products P
         JOIN subcategories SC ON SC.name = P.subcategory_name
         WHERE
