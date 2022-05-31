@@ -103,7 +103,8 @@ export const sendEmail = async () => {
     UPDATE products
       SET notified = true
       FROM subcategories
-      WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
+      WHERE products.subcategory_name = subcategories.name
+      AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
   `
   await db(query)
 
