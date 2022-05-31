@@ -1,7 +1,7 @@
 import * as pg from 'pg'
 
 // Utils
-import { PSQL_CODES } from 'utils/constants.js'
+import { ERROR_CODES } from 'utils/constants.js'
 
 const { Pool } = pg.default
 
@@ -16,9 +16,9 @@ const pool = new Pool({
 const handlePostgresError = (constraint) => {
   switch (constraint) {
     case 'products_pkey':
-      return PSQL_CODES.PRODUCT_UNIQUE
+      return ERROR_CODES.PRODUCT_UNIQUE
     default:
-      return PSQL_CODES.DEFAULT
+      return ERROR_CODES.DEFAULT
   }
 }
 

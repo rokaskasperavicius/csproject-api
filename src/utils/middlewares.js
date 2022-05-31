@@ -1,11 +1,11 @@
 import joi from 'joi'
 
 // Utils
-import { PSQL_CODES } from 'utils/constants'
+import { ERROR_CODES } from 'utils/constants'
 
 export const errorHandler = (error, req, res, next) => {
   const status = error.status || 400
-  const code = error.errorCode || PSQL_CODES.DEFAULT
+  const code = error.errorCode || ERROR_CODES.DEFAULT
   const text = error.message || 'Something went wrong'
 
   res.status(status).json({

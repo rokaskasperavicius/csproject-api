@@ -1,4 +1,5 @@
-export const PSQL_CODES = {
+export const ERROR_CODES = {
   DEFAULT: 1,
   PRODUCT_UNIQUE: 2,
+  NO_EXPIRING_PRODUCTS: 3,
 }

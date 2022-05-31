@@ -58,6 +58,9 @@ export const getEmailInfo = async () => {
   }
 }
 
+/**
+ * @returns true if the email was send and false if there were no expiring products
+ */
 export const sendEmail = async () => {
   const { name, email, todayFood, tomorrowFood, futureProducts } =
     await getEmailInfo()
@@ -103,4 +106,6 @@ export const sendEmail = async () => {
       WHERE products.subcategory_name = subcategories.name AND (CURRENT_DATE + INTERVAL '30 days') >= products.expiry_date AND subcategories.category_name <> 'Food';
   `
   await db(query)
+
+  return true
 }

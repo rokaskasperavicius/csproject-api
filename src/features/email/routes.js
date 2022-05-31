@@ -2,6 +2,7 @@ import express from 'express'
 
 // Utils
 import { sendEmail, getEmailInfo } from 'utils/email'
+import { ERROR_CODES } from 'utils/constants.js'
 
 // Middlewares
 import { schemaHandler } from 'utils/middlewares.js'
@@ -50,10 +51,24 @@ app.put(
 
 app.post('/force', async (req, res, next) => {
   try {
-    await sendEmail()
-    console.log('[email]: Successfully forced the email')
+    const isSent = await sendEmail()
 
-    res.json({ success: true })
+    if (isSent) {
+      console.log('[email]: Successfully forced the email')
+
+      res.json({ success: true })
+    } else {
+      console.log(
+        "[email]: Forced the email wasn't sent because of no expiring products"
+      )
+
+      // The email was not sent - no expiring products found
+      throw {
+        status: 404,
+        errorCode: ERROR_CODES.NO_EXPIRING_PRODUCTS,
+        message: 'No expiring products found',
+      }
+    }
   } catch (error) {
     next(error)
   }

@@ -75,8 +75,15 @@ app.get('/', (req, res) => {
  */
 schedule.scheduleJob('0 0 8 * * *', async () => {
   try {
-    await sendEmail()
-    console.log('[email]: Cron job successfully sent the email')
+    const isSent = await sendEmail()
+
+    if (isSent) {
+      console.log('[email]: Cron job successfully sent the email')
+    } else {
+      console.log(
+        '[email]: Cron job failed to send the email - no expiring products found'
+      )
+    }
   } catch {
     console.error('Cron job failed to send the email')
   }
