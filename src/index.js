@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
  * You can check how the cron job parser works here:
  * https://bradymholt.github.io/cron-expression-descriptor/
  */
-schedule.scheduleJob('0 0 8 * * *', async () => {
+schedule.scheduleJob('* * * * *', async () => {
   try {
     const isSent = await sendEmail()
 
